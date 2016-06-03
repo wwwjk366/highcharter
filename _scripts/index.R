@@ -107,22 +107,16 @@ highchart(type = "stock") %>%
 #' 
 #' You can chart maps and choropleth using the highmaps module.
 
-library("viridisLite")
-library("dplyr")
-
 data(unemployment)
 data(uscountygeojson)
+library("viridisLite")
 
-dclass <- data_frame(from = seq(0, 10, by = 2),
-                     to = c(seq(2, 10, by = 2), 50),
-                     color = substring(viridis(length(from), option = "C"), 0, 7))
-dclass <- list.parse3(dclass)
 
 highchart() %>% 
   hc_title(text = "US Counties unemployment rates, April 2015") %>% 
   hc_add_series_map(uscountygeojson, unemployment,
                     value = "value", joinBy = "code") %>% 
-  hc_colorAxis(dataClasses = dclass) %>% 
+  hc_colorAxis(dataClasses = color_classes(c(seq(0, 10, by = 2), 50),viridis(10, option = "C"))) %>% 
   hc_legend(layout = "vertical", align = "right",
             floating = TRUE, valueDecimals = 0,
             valueSuffix = "%") %>% 

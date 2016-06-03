@@ -47,7 +47,6 @@ x <- forecast(ets(USAccDeaths), h = 48, level = 95)
 
 hchart(x)
 
-
 #' ### igraph 
 
 library("igraph")
@@ -92,19 +91,34 @@ x <- cbind(mdeaths, fdeaths)
 
 hchart(x)
 
+#' ### Survival Models
+
+library("survival")
+library("dplyr")
+
+data(lung)
+
+lung <- mutate(lung, sex = ifelse(sex == 1, "Male", "Female"))
+
+fit <- survfit(Surv(time, status) ~ sex, data = lung) 
+
+hchart(fit, ranges = TRUE)
+
+#' ### Maxtrix
+#' 
+data(volcano)
+
+hchart(volcano) %>% 
+  hc_add_theme(hc_theme_null()) %>% 
+  hc_colorAxis(stops = color_stops())
+
+
 #' ### Distance matrix 
 #' 
 mtcars2 <- mtcars[1:20, ]
 x <- dist(mtcars2)
 
 hchart(x)
-
-#' ### Dendrogram
-x <- mtcars2 %>% dist() %>% hclust() %>% as.dendrogram()
-
-hchart(x) %>%
-  hc_chart(type = "bar") %>% 
-  hc_xAxis(tickLength = 0)
 
 #' ### Phylo
 library("ape")
