@@ -6,7 +6,7 @@
 rm(list = ls())
 library("highcharter")
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
-
+options(highcharter.theme = hc_theme_smpl())
 #'
 #' ## `hchart` function
 #' 
@@ -23,9 +23,11 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 #' ### Numeric & Histograms
 data(diamonds, package = "ggplot2")
 
-hchart(diamonds$price, color = "#B71C1C", name = "Price") %>% 
-  hc_title(text = "Histogram") %>% 
-  hc_subtitle(text = "You can zoom me")
+hchart(diamonds$price, color = "#B71C1C", name = "Price") 
+
+#' ### Densities
+
+hchart(density(diamonds$price), area = TRUE)
 
 #' ### Character & Factor
 hchart(diamonds$cut)
@@ -35,7 +37,6 @@ hchart(diamonds$cut)
 hchart(LakeHuron)
 
 #' ### Seasonal Decomposition of Time Series by Loess
-
 x <- stl(log(AirPassengers), "per")
 
 hchart(x)
@@ -48,7 +49,6 @@ x <- forecast(ets(USAccDeaths), h = 48, level = 95)
 hchart(x)
 
 #' ### igraph 
-
 library("igraph")
 library("RColorBrewer")
 
@@ -66,8 +66,8 @@ V(net)$color <- brewer.pal(length(unique(membership(wc))), "Accent")[membership(
 
 hchart(net, layout = layout_with_fr)
 
-
 #' ### `xts` from quantmod package
+#+eval=FALSE 
 library("quantmod")
 
 x <- getSymbols("USD/JPY", src = "oanda", auto.assign = FALSE)
@@ -75,11 +75,10 @@ x <- getSymbols("USD/JPY", src = "oanda", auto.assign = FALSE)
 hchart(x)
 
 #' ### `xts ohlc` objects
-
 #+eval=FALSE 
-# x <- getSymbols("YHOO", auto.assign = FALSE)
+x <- getSymbols("YHOO", auto.assign = FALSE)
 
-# hchart(x)
+hchart(x)
 
 #' ### Autocovariance & Autocorrelation
 x <- acf(diff(AirPassengers), plot = FALSE)
@@ -92,7 +91,6 @@ x <- cbind(mdeaths, fdeaths)
 hchart(x)
 
 #' ### Survival Models
-
 library("survival")
 library("dplyr")
 
@@ -103,6 +101,9 @@ lung <- mutate(lung, sex = ifelse(sex == 1, "Male", "Female"))
 fit <- survfit(Surv(time, status) ~ sex, data = lung) 
 
 hchart(fit, ranges = TRUE)
+
+#' ### Principal Components
+hchart(princomp(USArrests))
 
 #' ### Maxtrix
 #' 
