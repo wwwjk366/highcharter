@@ -26,7 +26,6 @@ data(diamonds, package = "ggplot2")
 hchart(diamonds$price, color = "#B71C1C", name = "Price") 
 
 #' ### Densities
-
 hchart(density(diamonds$price), area = TRUE)
 
 #' ### Character & Factor
