@@ -23,10 +23,10 @@ options(highcharter.theme = hc_theme_smpl())
 #' ### Numeric & Histograms
 data(diamonds, package = "ggplot2")
 
-hchart(diamonds$price, color = "#B71C1C", name = "Price") 
+hchart(diamonds$price) 
 
 #' ### Densities
-hchart(density(diamonds$price), area = TRUE)
+hchart(density(diamonds$price), area = TRUE, color = "#B71C1C", name = "Price")
 
 #' ### Character & Factor
 hchart(diamonds$cut)
@@ -66,7 +66,7 @@ V(net)$color <- brewer.pal(length(unique(membership(wc))), "Accent")[membership(
 hchart(net, layout = layout_with_fr)
 
 #' ### `xts` from quantmod package
-#+eval=FALSE 
+#+eval=TRUE
 library("quantmod")
 
 x <- getSymbols("USD/JPY", src = "oanda", auto.assign = FALSE)
@@ -74,7 +74,7 @@ x <- getSymbols("USD/JPY", src = "oanda", auto.assign = FALSE)
 hchart(x)
 
 #' ### `xts ohlc` objects
-#+eval=FALSE 
+#+eval=TRUE 
 x <- getSymbols("YHOO", auto.assign = FALSE)
 
 hchart(x)

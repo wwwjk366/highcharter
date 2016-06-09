@@ -4,6 +4,9 @@
 #+echo=FALSE
 rm(list = ls())
 library("highcharter")
+options(download.file.method = "libcurl")
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+options(highcharter.theme = hc_theme_smpl())
 
 #'
 #' ## Shortcuts for add data from R objects
@@ -102,8 +105,8 @@ highchart() %>%
                              name = "Personal savings rate") %>% 
   hc_add_series_times_values(economics$date,
                              economics$uempmed,
-                             name = "Median duration of unemployment") %>% 
-  hc_add_theme(hc_theme_db()) 
+                             name = "Median duration of unemployment")
+
 
 #' 
 #' ### From `ts` objects
@@ -137,8 +140,7 @@ highchart(type = "stock") %>%
                                "This is the event 2"),
                       id = "usdjpy") %>% 
   hc_rangeSelector(inputEnabled = FALSE) %>% 
-  hc_scrollbar(enabled = FALSE) %>% 
-  hc_add_theme(hc_theme_smpl()) 
+  hc_scrollbar(enabled = FALSE) 
 
 
 #' 
@@ -219,5 +221,5 @@ highchart() %>%
   hc_title(text = "Charting GNI data") %>% 
   hc_add_series_map(worldgeojson, GNI2014,
                     value = "GNI", joinBy = "iso3") %>% 
-  hc_colorAxis(stops = dshmstops) %>% 
-  hc_add_theme(hc_theme_db())
+  hc_colorAxis(stops = dshmstops)
+
