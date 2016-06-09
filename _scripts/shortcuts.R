@@ -43,15 +43,16 @@ highchart() %>%
 #' automatically parsed so you can use the default parameters
 #' of highcharts such as `x`, `y`, `z`, `color`, `name`, `low`, 
 #' `high` (http://api.highcharts.com/highcharts#series<column>.data).
-
-
 require("dplyr")
-n <- 50
+library("viridisLite")
+
+n <- 100
+
 df <- data_frame(
   x = rnorm(n),
   y = x * 2 + rnorm(n),
   z =  x ^ 2,
-  color = colorize_vector(x),
+  color = colorize(x, viridis(10, option = "C")),
   extrainfo = sprintf("I have (%s, %s) coordiantes!", round(x, 2), round(y, 2))
   )
 
@@ -62,16 +63,16 @@ highchart() %>%
   hc_add_series_df(data = df, type = "bubble")
 
 
-m <- 100
+m <- 200
 s <- cumsum(rnorm(m))
-e <- 2 + rbeta(n, 2, 2)
+e <- 2 + rbeta(m, 2, 2)
 
 df2 <- data_frame(
   x = seq(m),
   low = s - e,
   high = s + e,
   name = paste0("I'm point #", x),
-  color = colorize_vector(high, "B")
+  color = colorize(high,  c("#d35400", "#2980b9"))
 )
 
 head(df2)
@@ -80,32 +81,6 @@ highchart() %>%
   hc_tooltip(valueDecimals = 2) %>% 
   hc_add_series_df(data = df2, name = "I'm a columnrage series",
                    type = "columnrange", showInLegend = FALSE)
-
-
-#' ### Scatters
-#' 
-highchart() %>% 
-  hc_title(text = "Scatter chart with size and color") %>% 
-  hc_add_series_scatter(mtcars$wt, mtcars$mpg,
-                        mtcars$drat, mtcars$hp)
-
-#' 
-#' ### From times and values
-#' 
-
-data(economics, package = "ggplot2")
-
-highchart() %>% 
-  hc_title(text = "US economic time series") %>% 
-  hc_subtitle(text = "This dataset was produced from US 
-              economic time series data available") %>% 
-  hc_tooltip(valueDecimals = 2) %>% 
-  hc_add_series_times_values(economics$date,
-                             economics$psavert,
-                             name = "Personal savings rate") %>% 
-  hc_add_series_times_values(economics$date,
-                             economics$uempmed,
-                             name = "Median duration of unemployment")
 
 
 #' 
