@@ -132,6 +132,6 @@ makepage <- function(f){
   
 }
 
-makepage("_scripts/shortcuts.R")
+makepage("_scripts/hchart.R")
 
 # lapply(rfiles, function(x) { try(makepage(x))  })

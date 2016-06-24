@@ -29,7 +29,7 @@ hchart(diamonds$price)
 hchart(density(diamonds$price), area = TRUE, color = "#B71C1C", name = "Price")
 
 #' ### Character & Factor
-hchart(diamonds$cut)
+hchart(diamonds$cut, colorByPoint = TRUE)
 
 
 #' ### Time Series
@@ -47,25 +47,27 @@ x <- forecast(ets(USAccDeaths), h = 48, level = 95)
 
 hchart(x)
 
-#' ### igraph 
+#' ### igraph
 library("igraph")
-library("RColorBrewer")
 
-net <- barabasi.game(50)
+net <- barabasi.game(40)
 
 wc <- cluster_walktrap(net)
 
-V(net)$label <- 1:50
+V(net)$label <- 1:40
+V(net)$name <- 1:40
 V(net)$page_rank <- round(page.rank(net)$vector, 2)
 V(net)$betweenness <- round(betweenness(net), 2)
 V(net)$degree <- degree(net)
 V(net)$size <- V(net)$degree
 V(net)$comm <- membership(wc)
-V(net)$color <- brewer.pal(length(unique(membership(wc))), "Accent")[membership(wc)]
+V(net)$color <- colorize(membership(wc))
 
 hchart(net, layout = layout_with_fr)
 
 #' ### `xts` from quantmod package
+#+include=FALSE
+options(download.file.method = "libcurl")
 #+eval=TRUE
 library("quantmod")
 
@@ -104,14 +106,11 @@ hchart(fit, ranges = TRUE)
 #' ### Principal Components
 hchart(princomp(USArrests))
 
-#' ### Maxtrix
+#' ### Matrix
 #' 
 data(volcano)
 
-hchart(volcano) %>% 
-  hc_add_theme(hc_theme_null()) %>% 
-  hc_colorAxis(stops = color_stops())
-
+hchart(volcano)
 
 #' ### Distance matrix 
 #' 
@@ -120,11 +119,4 @@ x <- dist(mtcars2)
 
 hchart(x)
 
-#' ### Phylo
-library("ape")
-
-x <- mtcars %>% dist() %>% hclust() %>% as.phylo()
-
-set.seed(10)
-hchart(x)
-
+hchart(cor(mtcars))

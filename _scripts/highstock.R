@@ -4,6 +4,7 @@
 #+echo=FALSE
 rm(list = ls())
 library("highcharter")
+options(download.file.method="libcurl")
 
 #'
 #' ## Highstock Examples

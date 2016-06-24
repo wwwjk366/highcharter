@@ -9,6 +9,7 @@
 rm(list = ls())
 try(source("_scripts/helpers.R"))
 try(source("helpers.R"))
+options(download.file.method="libcurl")
 get_demos()
 
 #'
@@ -116,7 +117,8 @@ highchart() %>%
   hc_title(text = "US Counties unemployment rates, April 2015") %>% 
   hc_add_series_map(uscountygeojson, unemployment,
                     value = "value", joinBy = "code") %>% 
-  hc_colorAxis(dataClasses = color_classes(c(seq(0, 10, by = 2), 50),viridis(10, option = "C"))) %>% 
+  hc_colorAxis(dataClasses = color_classes(c(seq(0, 10, by = 2), 50),
+                                           viridis(10, option = "C"))) %>% 
   hc_legend(layout = "vertical", align = "right",
             floating = TRUE, valueDecimals = 0,
             valueSuffix = "%") %>% 
