@@ -9,8 +9,10 @@
 rm(list = ls())
 try(source("_scripts/helpers.R"))
 try(source("helpers.R"))
-options(download.file.method="libcurl")
+options(download.file.method = "libcurl")
 get_demos()
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+options(highcharter.theme = hc_theme_smpl())
 
 #'
 #' Highcharter is a [R](https://cran.r-project.org/) wrapper for **Highcharts** javascript
@@ -71,8 +73,7 @@ library("forecast")
 airforecast <- forecast(auto.arima(AirPassengers), level = 95)
 
 hchart(airforecast) %>%
-  hc_title(text = "Charting Example using hchart") %>% 
-  hc_add_theme(hc_theme_smpl())
+  hc_title(text = "Charting Example using hchart")
 
 
 #' 
@@ -100,8 +101,7 @@ highchart(type = "stock") %>%
   hc_add_series_flags(dates,
                       title = c("E1", "E2"), 
                       text = c("Event 1", "Event 2"),
-                      id = "usdjpy") %>% 
-  hc_add_theme(hc_theme_flat()) 
+                      id = "usdjpy")
 
 #' 
 #' ### Highmaps

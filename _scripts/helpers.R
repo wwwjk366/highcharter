@@ -4,7 +4,7 @@ get_demos <- function(){
   data("citytemp")
   
   p1 <- highchart() %>% 
-    hc_add_serie_scatter(mtcars$wt, mtcars$mpg,
+    hc_add_series_scatter(mtcars$wt, mtcars$mpg,
                          mtcars$drat, mtcars$hp) %>% 
     hc_add_theme(hc_theme_smpl())
   
