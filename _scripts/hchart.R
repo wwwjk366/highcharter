@@ -119,4 +119,6 @@ x <- dist(mtcars2)
 
 hchart(x)
 
+#' ### Correlation matrix
+#' 
 hchart(cor(mtcars))

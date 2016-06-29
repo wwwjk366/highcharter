@@ -99,3 +99,9 @@ footer i {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+/* printable sheet */
+@media print {
+  header {display:none;}
+  footer {display:none;}
+}
