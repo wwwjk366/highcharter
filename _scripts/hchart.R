@@ -20,9 +20,33 @@ options(highcharter.theme = hc_theme_smpl())
 #' factor, ts, mts, xts (and OHLC), forecast, acf, dist.
 #' 
 
-#' ### Numeric & Histograms
-data(diamonds, package = "ggplot2")
+#' ### Data Frames
+#' 
+#' This function works like `qplot`: You pass the data, choose the type
+#' of chart and then define the aesthetics for each variable.
+#' 
+data(diamonds, economics_long, mpg, package = "ggplot2")
 
+hchart(mpg, "scatter", x = displ, y = cty, size = hwy, group = manufacturer)
+
+mpgman2 <- count(mpg, manufacturer, year)
+hchart(mpgman2, "column", x = manufacturer, y = n, group = year)
+
+mpgman3 <- group_by(mpg, manufacturer) %>% 
+  summarise(n = n(), unique = length(unique(model))) %>% 
+  arrange(-n, -unique)
+hchart(mpgman3, "treemap", x = manufacturer, value = n, color = unique)
+
+#' 
+#' Check automatically if the x column is date class
+#' 
+library("dplyr")
+
+economics_long2 <- filter(economics_long, variable %in% c("pop", "uempmed", "unemploy"))
+
+hchart(economics_long2, "line", x = date, y = value01, group = variable)
+
+#' ### Numeric & Histograms
 hchart(diamonds$price) 
 
 #' ### Densities
@@ -30,7 +54,6 @@ hchart(density(diamonds$price), area = TRUE, color = "#B71C1C", name = "Price")
 
 #' ### Character & Factor
 hchart(diamonds$cut, colorByPoint = TRUE)
-
 
 #' ### Time Series
 hchart(LakeHuron)
@@ -49,13 +72,13 @@ hchart(x)
 
 #' ### igraph
 library("igraph")
+N <- 40
 
-net <- barabasi.game(40)
-
+net <- sample_gnp(N, p = 2/N)
 wc <- cluster_walktrap(net)
 
-V(net)$label <- 1:40
-V(net)$name <- 1:40
+V(net)$label <- seq(N)
+V(net)$name <- paste("I'm #", seq(N))
 V(net)$page_rank <- round(page.rank(net)$vector, 2)
 V(net)$betweenness <- round(betweenness(net), 2)
 V(net)$degree <- degree(net)
@@ -104,7 +127,7 @@ fit <- survfit(Surv(time, status) ~ sex, data = lung)
 hchart(fit, ranges = TRUE)
 
 #' ### Principal Components
-hchart(princomp(USArrests))
+hchart(princomp(USArrests, cor = TRUE))
 
 #' ### Matrix
 #' 

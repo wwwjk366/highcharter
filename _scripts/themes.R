@@ -3,6 +3,7 @@
 #' ---
 #+echo=FALSE
 rm(list = ls())
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 library("highcharter")
 
 #'
@@ -16,7 +17,7 @@ library("highcharter")
 #' 
 #' ### Default
 
-hc <- hc_demo()
+hc <- highcharts_demo()
 
 hc
 
@@ -58,6 +59,24 @@ hc %>% hc_add_theme(hc_theme_flatdark())
 #'  and color by http://www.materialui.co/flatuicolors
 
 hc %>% hc_add_theme(hc_theme_smpl())
+
+#' ### Sparkline
+#' 
+
+# You can test:
+# hc %>% hc_add_theme(hc_theme_sparkline())
+
+data(economics_long, package = "ggplot2")
+library(dplyr)
+
+economics_long %>%
+  group_by(variable) %>%
+  do(spark = hcts(.$value, type = "area",
+                  name = first(.$variable), showInLegend = FALSE) %>%
+       hc_add_theme(hc_theme_sparkline())) %>% 
+  .[["spark"]] %>% 
+  as.list() %>% 
+  hw_grid(rowheight = 100)
 
 #' ### Grid Light
 

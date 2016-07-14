@@ -21,47 +21,54 @@ options(highcharter.theme = hc_theme_smpl())
 #' 
 #' The main features of this package are:
 #' 
-#' - The implementation of **Highcharts** API including **Highstocks** and **Highmaps**.
-#' You can chart almost every type of chart using the ap. It is a **must** 
-#' know how highcharts works to take advantage of this package.
-#' - The shortcuts functions to easily add data from R objects to a highchart one
-#' like xts, ohlc, treemaps, etc.
-#' - The `hchart()` function. This function can chart various R objects on the
-#' fly. The resulting chart is a highchart object so you
-#' can keep modifying with the implmented API.
-#' - Themes. Highcharts is super really flexible to create themes.
-#' - Plugin implementations such a motion, font awesome and drag plugins.
+#' * Various chart type with the same style: scatters, bubble, line, 
+#' time series, heatmaps, treemap, bar charts, networks.
+#' * Chart various R object with one function. With hchart(x) you can 
+#' chart: data.frames, numeric, histogram, character, density, factors, ts,
+#'  mts, xts, stl, ohlc, acf, forecast, mforecast, ets, igraph, dist,
+#'   dendrogram, phylo, survfit classes.
+#' * Support Highstock charts. You can create a candlestick charts in 2 lines 
+#' of code. Support xts objects from the quantmod package.
+#' * Support Highmaps charts. It's easy to create choropleths or add 
+#' information in geojson format.
+#' * Piping styling.
+#' * Themes: you configurate your chart in multiples ways. There are
+#'  implemented themes like economist, financial times, google, 538 among 
+#'  others.
+#' * Plugins: motion, drag points, fontawesome, url-pattern, annotations.
 #' 
 #' 
 #' ### Hello World Example 
 #' 
-#'  This is a simple example.
+#' This is a simple example using `hchart` function.
 #' 
 library("highcharter")
+data(diamonds, mpg, package = "ggplot2")
 
-hc <- highchart() %>% 
+hchart(mpg, "scatter", x = displ, y = hwy, group = class)
+
+#'
+#' Or using the highcharts API
+#' 
+
+highchart() %>% 
   hc_chart(type = "column") %>% 
   hc_title(text = "A highcharter chart") %>% 
   hc_xAxis(categories = 2012:2016) %>% 
   hc_add_series(data = c(3900,  4200,  5700,  8500, 11900),
                 name = "Downloads")
 
-hc
 
 #' 
 #' ### Generic Function `hchart`
 #' 
-#' Among its features highcharter can chart various objects 
-#' with the generic^[I want to say *magic*] 
-#' `hchart` function and add 
-#' themes.
+#' Among its features highcharter can chart various objects depending of
+#' its class with the generic^[I want to say *magic*]  `hchart` function.
 
-data(diamonds, package = "ggplot2")
+hchart(diamonds$cut, colorByPoint = TRUE, name = "Cut")
 
 hchart(diamonds$price, color = "#B71C1C", name = "Price") %>% 
   hc_title(text = "You can zoom me")
-
-hchart(diamonds$cut, colorByPoint = TRUE, name = "Cut")
 
 #' 
 #' One of the nicest class which `hchart` can plot is the `forecast`
@@ -72,8 +79,7 @@ library("forecast")
 
 airforecast <- forecast(auto.arima(AirPassengers), level = 95)
 
-hchart(airforecast) %>%
-  hc_title(text = "Charting Example using hchart")
+hchart(airforecast)
 
 
 #' 
@@ -94,12 +100,9 @@ eurkpw <- getSymbols("EUR/KPW", src = "oanda", auto.assign = FALSE)
 dates <- as.Date(c("2015-05-08", "2015-09-12"), format = "%Y-%m-%d")
 
 highchart(type = "stock") %>% 
-  hc_title(text = "Charting some Symbols") %>% 
-  hc_subtitle(text = "Data extracted using quantmod package") %>% 
   hc_add_series_xts(usdjpy, id = "usdjpy") %>% 
   hc_add_series_xts(eurkpw, id = "eurkpw") %>% 
-  hc_add_series_flags(dates,
-                      title = c("E1", "E2"), 
+  hc_add_series_flags(dates, title = c("E1", "E2"), 
                       text = c("Event 1", "Event 2"),
                       id = "usdjpy")
 
@@ -110,16 +113,14 @@ highchart(type = "stock") %>%
 
 data(unemployment)
 data(uscountygeojson)
-library("viridisLite")
-
 
 highchart() %>% 
-  hc_title(text = "US Counties unemployment rates, April 2015") %>% 
-  hc_add_series_map(uscountygeojson, unemployment,
-                    value = "value", joinBy = "code") %>% 
-  hc_colorAxis(dataClasses = color_classes(c(seq(0, 10, by = 2), 50),
-                                           viridis(10, option = "C"))) %>% 
+  hc_add_series_map(
+    uscountygeojson, unemployment,
+    name = "Unemployment", value = "value", joinBy = "code") %>% 
+  hc_colorAxis(dataClasses = color_classes(c(seq(0, 10, by = 2), 50))) %>% 
   hc_legend(layout = "vertical", align = "right",
             floating = TRUE, valueDecimals = 0,
-            valueSuffix = "%") %>% 
-  hc_mapNavigation(enabled = TRUE) 
+            valueSuffix = "%") 
+
+

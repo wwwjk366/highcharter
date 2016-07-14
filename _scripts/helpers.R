@@ -2,37 +2,30 @@ get_demos <- function(){
   library("highcharter")
   library("forecast")
   data("citytemp")
+  data(diamonds, mpg, package = "ggplot2")
   
-  p1 <- highchart() %>% 
-    hc_add_series_scatter(mtcars$wt, mtcars$mpg,
-                         mtcars$drat, mtcars$hp) %>% 
-    hc_add_theme(hc_theme_smpl())
+  p1 <- hchart(mpg, "scatter", x = displ, y = hwy, color = hwy)
   
-  p2 <- hchart(forecast(auto.arima(AirPassengers), level = 99.9),
-               showInLegend = FALSE) %>% 
+  p2 <- hchart(
+    forecast(auto.arima(AirPassengers), level = 95, h = 12*3),
+    showInLegend = FALSE) %>% 
     hc_tooltip(valueDecimals = 2) %>% 
     hc_add_theme(hc_theme_538())
   
-#   x <- getSymbols("USD/EUR", src = "oanda", auto.assign = FALSE)
-#   p3 <- hchart(x, name = "USD/EUR") %>%
-#     hc_navigator(enabled = FALSE) %>% 
-#     hc_add_theme(hc_theme_economist())
-  
-  p3 <- highchart() %>% 
-    hc_xAxis(categories = citytemp$month) %>% 
-    hc_add_series(name = "Tokyo", data = citytemp$tokyo, showInLegend = FALSE) %>% 
-    hc_add_series(name = "London", data = citytemp$london, showInLegend = FALSE) %>% 
-    hc_add_series(name = "Berlin", data = citytemp$berlin, showInLegend = FALSE) %>% 
-    hc_add_theme(hc_theme_economist())
-  
+  p3 <- highcharts_demo()%>% 
+    hc_add_theme(hc_theme_economist()) %>% 
+    hc_plotOptions(series = list(showInLegend = FALSE)) %>% 
+    hc_title(text = "") %>% hc_subtitle(text = "")
   
   data(worldgeojson)
   data(GNI2014, package = "treemap")
   head(GNI2014)
   library("viridisLite")
   
-  dshmstops <- data.frame(q = c(0, exp(1:5)/exp(5)), c = substring(viridis(5 + 1), 0, 7)) %>% 
-    list.parse2()
+  dshmstops <- data.frame(
+    q = c(0, exp(1:5)/exp(5)),
+    c = substring(viridis(5 + 1), 0, 7)) %>% 
+    list_parse2()
   
   p4 <- highchart() %>% 
     hc_add_series_map(worldgeojson, GNI2014, name = "",
@@ -42,12 +35,34 @@ get_demos <- function(){
     hc_add_theme(hc_theme_db()) %>% 
     hc_mapNavigation(enabled = FALSE)
   
-    
+  p5 <- hcboxplot(diamonds$price, diamonds$cut, outliers = FALSE,
+                  showInLegend = FALSE) %>% 
+    hc_yAxis(min = 0)
+  
+  
+  library("igraph")
+  N <- 20
+  net <- sample_gnp(N, p = .1)
+  wc <- cluster_walktrap(net)
+  V(net)$label <- 1:N
+  V(net)$name <- 1:N
+  V(net)$page_rank <- round(page.rank(net)$vector, 2)
+  V(net)$betweenness <- round(betweenness(net), 2)
+  V(net)$degree <- degree(net)
+  V(net)$size <- V(net)$degree
+  V(net)$comm <- membership(wc)
+  V(net)$color <- colorize(membership(wc), viridis::inferno(10))
+  
+  p6 <- hchart(net, layout = layout_with_fr)
+  
+  
   H <- 250
   p1$height <- H
   p2$height <- H
   p3$height <- H
   p4$height <- H
+  p5$height <- H
+  p6$height <- H
   
   demos <- htmltools::tagList(
     tags$div(
@@ -59,10 +74,15 @@ get_demos <- function(){
       class = "row",
       tags$div(class = "col-sm-6", p3),
       tags$div(class = "col-sm-6", p4)
+    ),
+    tags$div(
+      class = "row",
+      tags$div(class = "col-sm-6", p5),
+      tags$div(class = "col-sm-6", p6)
     )
   )
   
-  # browsable(demos)
+  # htmltools::browsable(demos)
   demos  
   
   

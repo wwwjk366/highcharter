@@ -65,12 +65,12 @@ infolist <- list(
   list(c("_scripts/highcharts-api.R",
          paste(fa_icon("cogs"), "API"),
          "What can we do")),
-  list(c("_scripts/shortcuts.R",
-         paste(fa_icon("rocket"), "Shortcuts"),
-         "Add data series from R objects")),
   list(c("_scripts/hchart.R",
          paste(fa_icon("magic"), "<code>hchart</code> function"),
          "The Magic")),
+  list(c("_scripts/shortcuts.R",
+         paste(fa_icon("rocket"), "Shortcuts"),
+         "Add data series from R objects")),  
   list(c("_scripts/themes.R",
          paste(fa_icon("paint-brush"), "Themes"),
          "Changing the look")),
@@ -132,7 +132,7 @@ makepage <- function(f){
   
 }
 
-makepage("_scripts/index.R")
+makepage("_scripts/hchart.R")
 
 
 # lapply(rfiles, function(x) { try(makepage(x))  })

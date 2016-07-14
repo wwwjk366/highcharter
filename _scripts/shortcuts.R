@@ -14,10 +14,35 @@ options(highcharter.theme = hc_theme_smpl())
 #' <div id ="toc"></div>
 #' 
 #' There are some functions to add data from differents
-#' objects like vectors, time series, treemaps, gejson, or make 
-#' special charts like boxplots. 
+#' objects like data frames, lists, vectors, time series, treemaps,
+#' geojson, or make special charts like boxplots. 
 #' 
 #' 
+
+#' ### Data frame
+#' 
+#' With `hc_add_series_df` the data frame is *kind of* ggplot geoms. You
+#' need to specify the type (scatter, line) and the variables for each
+#' aesthetic. 
+#' 
+library("dplyr")
+library("broom")
+
+data(mpg, package = "ggplot2")
+
+fit <- loess(displ ~ hwy, data = mpg) %>% 
+  augment() %>% 
+  arrange(hwy)
+
+highchart() %>% 
+  hc_title(text = "Package Broom rocks!") %>% 
+  hc_add_series_df(mpg, type = "scatter", x = hwy, y = displ, group = class) %>%
+  hc_add_series_df(fit, type = "arearange",
+                   x = hwy,
+                   low = .fitted - .se.fit,
+                   high = .fitted + .se.fit)
+
+
 #' ### List of series
 #' 
 #' Sometimes you create a list of data where each
@@ -25,63 +50,12 @@ options(highcharter.theme = hc_theme_smpl())
 #' for dont repeat `hc_add_series` you can use `hc_add_series_list`
 #' 
 ds <- lapply(seq(10), function(x){
-  list(data = cumsum(rnorm(100, 1, 5)), name = x)
+  list(data = cumsum(rnorm(50, 1, 5)), name = x)
 })
 
 highchart() %>%
-  hc_plotOptions(
-    series = list(
-      showInLegend = FALSE,
-      marker = list(enabled = FALSE)
-      )
-    ) %>%
+  hc_plotOptions(series = list(showInLegend = FALSE,marker = list(enabled = FALSE))) %>%
   hc_add_series_list(ds)
-
-#' ### Data frame
-#' 
-#' With `hc_add_series_df` the data frame is
-#' automatically parsed so you can use the default parameters
-#' of highcharts such as `x`, `y`, `z`, `color`, `name`, `low`, 
-#' `high` (http://api.highcharts.com/highcharts#series<column>.data).
-require("dplyr")
-library("viridisLite")
-
-n <- 100
-
-df <- data_frame(
-  x = rnorm(n),
-  y = x * 2 + rnorm(n),
-  z =  x ^ 2,
-  color = colorize(x, viridis(10, option = "C")),
-  extrainfo = sprintf("I have (%s, %s) coordiantes!", round(x, 2), round(y, 2))
-  )
-
-head(df)
-
-highchart() %>%
-  hc_tooltip(pointFormat = "{point.extrainfo}") %>% 
-  hc_add_series_df(data = df, type = "bubble")
-
-
-m <- 200
-s <- cumsum(rnorm(m))
-e <- 2 + rbeta(m, 2, 2)
-
-df2 <- data_frame(
-  x = seq(m),
-  low = s - e,
-  high = s + e,
-  name = paste0("I'm point #", x),
-  color = colorize(high,  c("#d35400", "#2980b9"))
-)
-
-head(df2)
-
-highchart() %>%
-  hc_tooltip(valueDecimals = 2) %>% 
-  hc_add_series_df(data = df2, name = "I'm a columnrage series",
-                   type = "columnrange", showInLegend = FALSE)
-
 
 #' 
 #' ### From `ts` objects
