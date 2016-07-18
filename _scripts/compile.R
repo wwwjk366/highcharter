@@ -7,7 +7,6 @@ library("purrr")
 library("stringr")
 library("highcharter")
 
-
 set.seed(100)
 options(htmlwidgets.TOJSON_ARGS = list(pretty = FALSE))
 
@@ -132,7 +131,7 @@ makepage <- function(f){
   
 }
 
-makepage("_scripts/hchart.R")
+makepage("_scripts/showcase.R")
 
 
 # lapply(rfiles, function(x) { try(makepage(x))  })

@@ -5,6 +5,7 @@
 #+echo=FALSE
 rm(list = ls())
 library("highcharter")
+library("dplyr")
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 options(highcharter.theme = hc_theme_smpl())
 #'
@@ -27,10 +28,10 @@ options(highcharter.theme = hc_theme_smpl())
 #' 
 data(diamonds, economics_long, mpg, package = "ggplot2")
 
-hchart(mpg, "scatter", x = displ, y = cty, size = hwy, group = manufacturer)
+hchart(mpg, "scatter", x = displ, y = hwy, group = class)
 
-mpgman2 <- count(mpg, manufacturer, year)
-hchart(mpgman2, "column", x = manufacturer, y = n, group = year)
+mpgman2 <- count(mpg, class, year)
+hchart(mpgman2, "column", x = class, y = n, group = year)
 
 mpgman3 <- group_by(mpg, manufacturer) %>% 
   summarise(n = n(), unique = length(unique(model))) %>% 
@@ -43,7 +44,6 @@ hchart(mpgman3, "treemap", x = manufacturer, value = n, color = unique)
 library("dplyr")
 
 economics_long2 <- filter(economics_long, variable %in% c("pop", "uempmed", "unemploy"))
-
 hchart(economics_long2, "line", x = date, y = value01, group = variable)
 
 #' ### Numeric & Histograms
