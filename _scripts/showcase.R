@@ -119,16 +119,13 @@ x <- c("Min", "Median", "Max")
 y <- sprintf("{point.%s}", c("lower", "median", "upper"))
 tltip <- tooltip_table(x, y)
 
-hchart(globaltemp, type = "columnrange", x = year, low = lower, high = upper,
+hchart(globaltemp, type = "columnrange", x = date, low = lower, high = upper,
        color = median) %>% 
   hc_yAxis(tickPositions = c(-2, 0, 1.5, 2)) %>% 
   hc_tooltip(
     useHTML = TRUE,
-    headerFormat = as.character(tags$small("{point.x:%Y}")),
+    headerFormat = as.character(tags$small("{point.x:%Y %b}")),
     pointFormat = tltip
-  ) %>% 
-  hc_plotOptions(
-    columnrange = list(borderColor = "transparent")
   ) %>% 
   hc_add_theme(thm)
 
