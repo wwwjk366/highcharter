@@ -124,7 +124,7 @@ hchart(globaltemp, type = "columnrange", x = date, low = lower, high = upper,
   hc_yAxis(tickPositions = c(-2, 0, 1.5, 2)) %>% 
   hc_tooltip(
     useHTML = TRUE,
-    headerFormat = as.character(tags$small("{point.x:%Y %b}")),
+    headerFormat = as.character(tags$small("{point.x: %Y %b}")),
     pointFormat = tltip
   ) %>% 
   hc_add_theme(thm)
