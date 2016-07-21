@@ -131,7 +131,7 @@ makepage <- function(f){
   
 }
 
-makepage("_scripts/showcase.R")
+makepage("_scripts/index.R")
 
 
 # lapply(rfiles, function(x) { try(makepage(x))  })
