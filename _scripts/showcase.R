@@ -19,6 +19,41 @@ options(highcharter.theme = NULL)
 #'
 
 #'
+#' ### Stars
+#' 
+#' Inspired by Nadieh Bremer's [block](http://bl.ocks.org/nbremer/eb0d1fd4118b731d069e2ff98dfadc47).
+#' 
+data(stars)
+
+thm <- hc_theme(
+  chart = list(
+    backgroundColor = "black"
+  ),
+  yAxis = list(
+    gridLineWidth = 0
+  )
+)
+
+colors <- c("#FB1108","#FD150B","#FA7806","#FBE426","#FCFB8F",
+            "#F3F5E7", "#C7E4EA","#ABD6E6","#9AD2E1")
+
+stars$color <- colorize(log(stars$temp), colors)
+
+x <- c("Luminosity", "Temperature", "Distance")
+y <- sprintf("{point.%s}",
+             c("lum", "temp", "distance"))
+tltip <- tooltip_table(x, y)
+
+
+hchart(stars, "point", x = temp, y = lum, size = radiussun) %>% 
+  hc_xAxis(type = "logarithmic", reversed = TRUE) %>% 
+  hc_yAxis(type = "logarithmic") %>% 
+  hc_title(text = "Our nearest Stars") %>% 
+  hc_subtitle(text = "In a Hertzsprung-Russell diagram") %>% 
+  hc_add_theme(thm) %>% 
+  hc_tooltip(useHTML = TRUE, headerFormat = "", pointFormat = tltip)
+
+#'
 #' ### Weathers Radials
 #' 
 #' From [here](http://bl.ocks.org/bricedev/458a01917183d98dff3c) and 
