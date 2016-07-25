@@ -19,50 +19,6 @@ options(highcharter.theme = NULL)
 #'
 
 #'
-#' ### The Impact of Vaccines
-#' 
-#' From [WSJ graphic: Battling Infectious Diseases in the 20th Century](http://graphics.wsj.com/infectious-diseases-and-vaccines/): 
-#' 
-data("vaccines")
-library("viridis")
-
-fntltp <- JS("function(){
-  return this.point.x + ' ' +  this.series.yAxis.categories[this.point.y] + ':<br>' +
-  Highcharts.numberFormat(this.point.value, 2);
-}")
-
-stpscol <- color_stops(10, rev(viridis(10)))
-
-plotline <- list(
-  color = "#fde725", value = 1963, width = 2, zIndex = 5,
-  label = list(
-    text = "Vaccine Intoduced", verticalAlign = "top",
-    style = list(color = "#606060"), textAlign = "left",
-    rotation = 0, y = -5)
-)
-
-thm <- hc_theme_smpl(
-  yAxis = list(
-    offset = -20,
-    tickLength =  0,
-    gridLineWidth = 0,
-    minorGridLineWidth = 0,
-    labels = list(style = list(fontSize = "8px"))
-  )
-)
-
-hchart(vaccines, "heatmap", x = year, y = state, value = count) %>% 
-  hc_colorAxis(stops = stpscol, type = "logarithmic") %>% 
-  hc_yAxis(reversed = TRUE) %>% 
-  hc_tooltip(formatter = fntltp) %>% 
-  hc_xAxis(plotLines = list(plotline)) %>%
-  hc_title(text = "Infectious Diseases and Vaccines") %>% 
-  hc_legend(layout = "vertical", verticalAlign = "top",
-            align = "right", valueDecimals = 0) %>% 
-  hc_add_theme(thm) %>% 
-  hc_size(height = 800)
-
-#'
 #' ### Weathers Radials
 #' 
 #' From [here](http://bl.ocks.org/bricedev/458a01917183d98dff3c) and 
@@ -129,4 +85,46 @@ hchart(globaltemp, type = "columnrange", x = date, low = lower, high = upper,
   ) %>% 
   hc_add_theme(thm)
 
+#'
+#' ### The Impact of Vaccines
+#' 
+#' From [WSJ graphic: Battling Infectious Diseases in the 20th Century](http://graphics.wsj.com/infectious-diseases-and-vaccines/): 
+#' 
+data("vaccines")
+library("viridis")
 
+fntltp <- JS("function(){
+  return this.point.x + ' ' +  this.series.yAxis.categories[this.point.y] + ':<br>' +
+  Highcharts.numberFormat(this.point.value, 2);
+}")
+
+stpscol <- color_stops(10, rev(viridis(10)))
+
+plotline <- list(
+  color = "#fde725", value = 1963, width = 2, zIndex = 5,
+  label = list(
+    text = "Vaccine Intoduced", verticalAlign = "top",
+    style = list(color = "#606060"), textAlign = "left",
+    rotation = 0, y = -5)
+)
+
+thm <- hc_theme_smpl(
+  yAxis = list(
+    offset = -20,
+    tickLength =  0,
+    gridLineWidth = 0,
+    minorGridLineWidth = 0,
+    labels = list(style = list(fontSize = "8px"))
+  )
+)
+
+hchart(vaccines, "heatmap", x = year, y = state, value = count) %>% 
+  hc_colorAxis(stops = stpscol, type = "logarithmic") %>% 
+  hc_yAxis(reversed = TRUE) %>% 
+  hc_tooltip(formatter = fntltp) %>% 
+  hc_xAxis(plotLines = list(plotline)) %>%
+  hc_title(text = "Infectious Diseases and Vaccines") %>% 
+  hc_legend(layout = "vertical", verticalAlign = "top",
+            align = "right", valueDecimals = 0) %>% 
+  hc_add_theme(thm) %>% 
+  hc_size(height = 800)
