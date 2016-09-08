@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>hc_add_series_times_values. highcharter 0.4.0.9999</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">highcharter 0.4.0.9999</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Shorcut for create/add time series from times and values</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='hc_add_series_times_values.html'>hc_add_series_times_values</a></span><span class="keyword">(</span><span class="symbol">hc</span><span class="keyword">,</span> <span class="symbol">dates</span><span class="keyword">,</span> <span class="symbol">values</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>hc</dt>
+      <dd>A <code>highchart</code> <code>htmlwidget</code> object.</dd>
+      <dt>dates</dt>
+      <dd>A date vector (same length as <code>values</code>)</dd>
+      <dt>values</dt>
+      <dd>A numeric vector</dd>
+      <dt>...</dt>
+      <dd>Aditional arguments for the data series (<a href = 'http://api.highcharts.com/highcharts#series'>http://api.highcharts.com/highcharts#series</a>).</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>This function add a time series to a <code>highchart</code> object.</p>
+
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+
+      <p>This function <b>modify</b> the type of <code>chart</code> to <code>datetime</code></p>
+
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class="comment">## Not run: ------------------------------------</span>
+<span class="comment"># </span>
+<span class="comment"># require("ggplot2")</span>
+<span class="comment"># data(economics, package = "ggplot2")</span>
+<span class="comment"># </span>
+<span class="comment"># hc_add_series_times_values(hc = highchart(),</span>
+<span class="comment">#                            dates = economics$date,</span>
+<span class="comment">#                            values = economics$psavert, </span>
+<span class="comment">#                            name = "Personal Savings Rate")</span>
+<span class="comment">## ---------------------------------------------</span></div></pre>
+  </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>hc_add_series_times_values</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

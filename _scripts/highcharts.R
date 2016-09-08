@@ -21,9 +21,8 @@ rainfall <- c(49.9, 71.5, 106.4, 129.2, 144, 176,
 temperature <- c(7, 6.9, 9.5, 14.5, 18.2, 21.5,
                  25.2, 26.5, 23.3, 18.3, 13.9, 9.6)
 
-col1 <- hc_get_colors()[3]
-col2 <- hc_get_colors()[2]
-
+col1 <- "#90ED7D"
+col2 <- "#5C5C61"
 
 highchart() %>% 
   hc_title(text = "Tokyo Climate") %>% 
@@ -105,34 +104,6 @@ highchart() %>%
       )
     )
 
-#'
-#' ### Creating Annotations
-#' 
-#' You can use `type = 'scatter'` to add annotations.
-#' 
-
-n <- 50
-df <- data.frame(x = rnorm(n), y = rnorm(n))
-ds <- list.parse2(df)
-
-df2 <- data.frame(x = c(1, -1, -1, 1)*2,
-                  y = c(1, 1, -1, -1)*2,
-                  text = paste("Quadrant", letters[1:4]))
-
-ds2 <- list.parse3(df2)
-
-highchart() %>% 
-  hc_add_theme(hc_theme_538()) %>% 
-  hc_add_serie(data = ds, name = "data", type = "scatter") %>% 
-  hc_add_serie(data = ds2,
-               name = "annotations",
-               type = "scatter",
-               color = "transparent",
-               showInLegend = FALSE,
-               enableMouseTracking = FALSE,
-               dataLabels = list(enabled = TRUE, y = 10, format = "{point.text}",
-                                 style = list(fontSize = "20px",
-                                              color =  'rgba(0,0,0,0.70)')))
 
 #'
 #' ### Gauges like Apple Watch
@@ -280,7 +251,7 @@ highchart() %>%
   hc_chart(type = "funnel") %>% 
   hc_add_series(
     name = "Unique Users",
-    data = list.parse3(
+    data = list_parse(
       data.frame(
         name = c("WS visits", "Downloads", "Requested", "Invoice", "Finalized"),
         y = c(15654, 4064, 1987, 976, 846)

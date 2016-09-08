@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>hc_drilldown. highcharter 0.4.0.9999</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">highcharter 0.4.0.9999</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Drilldown options for higcharts objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='hc_drilldown.html'>hc_drilldown</a></span><span class="keyword">(</span><span class="symbol">hc</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>hc</dt>
+      <dd>A <code>highchart</code> <code>htmlwidget</code> object.</dd>
+      <dt>...</dt>
+      <dd>Arguments defined in <a href = 'http://api.highcharts.com/highcharts#drilldown'>http://api.highcharts.com/highcharts#drilldown</a>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>Options for drill down, the concept of inspecting increasingly high 
+resolution data through clicking on chart items like columns or pie slices.</p>
+
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/library'>library</a></span><span class="keyword">(</span><span class="string">"dplyr"</span><span class="keyword">)</span>
+<span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/library'>library</a></span><span class="keyword">(</span><span class="string">"purrr"</span><span class="keyword">)</span></div>
+<strong class='message'>
+Attaching package: ‘purrr’
+</strong>
+<strong class='message'>The following objects are masked from ‘package:dplyr’:
+
+    contains, order_by
+</strong>
+<div class='input'>
+<span class="symbol">df</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span><span class="keyword">(</span>
+  <span class="argument">name</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"Animals"</span><span class="keyword">,</span> <span class="string">"Fruits"</span><span class="keyword">,</span> <span class="string">"Cars"</span><span class="keyword">)</span><span class="keyword">,</span>
+  <span class="argument">y</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="number">4</span><span class="keyword">)</span><span class="keyword">,</span>
+  <span class="argument">drilldown</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/chartr'>tolower</a></span><span class="keyword">(</span><span class="symbol">name</span><span class="keyword">)</span>
+<span class="keyword">)</span>
+
+<span class="symbol">df</span></div>
+<div class='output'># A tibble: 3 × 3
+     name     y drilldown
+    &lt;chr&gt; &lt;dbl&gt;     &lt;chr&gt;
+1 Animals     5   animals
+2  Fruits     2    fruits
+3    Cars     4      cars
+</div>
+<div class='input'>
+<span class="symbol">ds</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='list_parse.html'>list_parse</a></span><span class="keyword">(</span><span class="symbol">df</span><span class="keyword">)</span>
+<span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/names'>names</a></span><span class="keyword">(</span><span class="symbol">ds</span><span class="keyword">)</span> <span class="assignement">&lt;-</span> NULL
+<span class="functioncall"><a href='http://www.rdocumentation.org/packages/utils/topics/str'>str</a></span><span class="keyword">(</span><span class="symbol">ds</span><span class="keyword">)</span></div>
+<div class='output'>List of 3
+ $ :List of 3
+  ..$ name     : chr &quot;Animals&quot;
+  ..$ y        : num 5
+  ..$ drilldown: chr &quot;animals&quot;
+ $ :List of 3
+  ..$ name     : chr &quot;Fruits&quot;
+  ..$ y        : num 2
+  ..$ drilldown: chr &quot;fruits&quot;
+ $ :List of 3
+  ..$ name     : chr &quot;Cars&quot;
+  ..$ y        : num 4
+  ..$ drilldown: chr &quot;cars&quot;
+</div>
+<div class='input'>
+<span class="symbol">hc</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='highchart.html'>highchart</a></span><span class="keyword">(</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_chart.html'>hc_chart</a></span><span class="keyword">(</span><span class="argument">type</span> <span class="argument">=</span> <span class="string">"column"</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_title.html'>hc_title</a></span><span class="keyword">(</span><span class="argument">text</span> <span class="argument">=</span> <span class="string">"Basic drilldown"</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_xAxis.html'>hc_xAxis</a></span><span class="keyword">(</span><span class="argument">type</span> <span class="argument">=</span> <span class="string">"category"</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_legend.html'>hc_legend</a></span><span class="keyword">(</span><span class="argument">enabled</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_plotOptions.html'>hc_plotOptions</a></span><span class="keyword">(</span>
+    <span class="argument">series</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span><span class="keyword">(</span>
+      <span class="argument">boderWidth</span> <span class="argument">=</span> <span class="number">0</span><span class="keyword">,</span>
+      <span class="argument">dataLabels</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span><span class="keyword">(</span><span class="argument">enabled</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">)</span>
+    <span class="keyword">)</span>
+  <span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_add_series.html'>hc_add_series</a></span><span class="keyword">(</span>
+    <span class="argument">name</span> <span class="argument">=</span> <span class="string">"Things"</span><span class="keyword">,</span>
+    <span class="argument">colorByPoint</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span>
+    <span class="argument">data</span> <span class="argument">=</span> <span class="symbol">ds</span>
+  <span class="keyword">)</span>
+
+<span class="symbol">dfan</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span><span class="keyword">(</span>
+  <span class="argument">name</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"Cats"</span><span class="keyword">,</span> <span class="string">"Dogs"</span><span class="keyword">,</span> <span class="string">"Cows"</span><span class="keyword">,</span> <span class="string">"Sheep"</span><span class="keyword">,</span> <span class="string">"Pigs"</span><span class="keyword">)</span><span class="keyword">,</span>
+  <span class="argument">value</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="number">4</span><span class="keyword">,</span> <span class="number">3</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="number">1</span><span class="keyword">)</span>
+<span class="keyword">)</span>
+
+<span class="symbol">dffru</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span><span class="keyword">(</span>
+  <span class="argument">name</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"Apple"</span><span class="keyword">,</span> <span class="string">"Organes"</span><span class="keyword">)</span><span class="keyword">,</span>
+  <span class="argument">value</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="number">4</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span>
+<span class="keyword">)</span>
+
+<span class="symbol">dfcar</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>data_frame</a></span><span class="keyword">(</span>
+  <span class="argument">name</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">"Toyota"</span><span class="keyword">,</span> <span class="string">"Opel"</span><span class="keyword">,</span> <span class="string">"Volkswage"</span><span class="keyword">)</span><span class="keyword">,</span>
+  <span class="argument">value</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="number">4</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span>
+<span class="keyword">)</span>
+
+<span class="symbol">second_el_to_numeric</span> <span class="assignement">&lt;-</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">ls</span><span class="keyword">)</span><span class="keyword">{</span>
+
+  <span class="functioncall"><a href='http://www.rdocumentation.org/packages/purrr/topics/map'>map</a></span><span class="keyword">(</span><span class="symbol">ls</span><span class="keyword">,</span> <span class="keyword">function</span><span class="keyword">(</span><span class="formalargs">x</span><span class="keyword">)</span><span class="keyword">{</span>
+    <span class="symbol">x</span><span class="keyword">[[</span><span class="number">2</span><span class="keyword">]</span><span class="keyword">]</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/numeric'>as.numeric</a></span><span class="keyword">(</span><span class="symbol">x</span><span class="keyword">[[</span><span class="number">2</span><span class="keyword">]</span><span class="keyword">]</span><span class="keyword">)</span>
+    <span class="symbol">x</span>
+  <span class="keyword">}</span><span class="keyword">)</span>
+
+<span class="keyword">}</span>
+
+<span class="symbol">dsan</span> <span class="assignement">&lt;-</span> <span class="functioncall">second_el_to_numeric</span><span class="keyword">(</span><span class="functioncall"><a href='list_parse.html'>list_parse2</a></span><span class="keyword">(</span><span class="symbol">dfan</span><span class="keyword">)</span><span class="keyword">)</span>
+
+<span class="symbol">dsfru</span> <span class="assignement">&lt;-</span> <span class="functioncall">second_el_to_numeric</span><span class="keyword">(</span><span class="functioncall"><a href='list_parse.html'>list_parse2</a></span><span class="keyword">(</span><span class="symbol">dffru</span><span class="keyword">)</span><span class="keyword">)</span>
+
+<span class="symbol">dscar</span> <span class="assignement">&lt;-</span> <span class="functioncall">second_el_to_numeric</span><span class="keyword">(</span><span class="functioncall"><a href='list_parse.html'>list_parse2</a></span><span class="keyword">(</span><span class="symbol">dfcar</span><span class="keyword">)</span><span class="keyword">)</span>
+
+
+<span class="symbol">hc</span> <span class="assignement">&lt;-</span> <span class="symbol">hc</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_drilldown.html'>hc_drilldown</a></span><span class="keyword">(</span>
+    <span class="argument">allowPointDrilldown</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span>
+    <span class="argument">series</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span><span class="keyword">(</span>
+      <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span><span class="keyword">(</span>
+        <span class="argument">id</span> <span class="argument">=</span> <span class="string">"animals"</span><span class="keyword">,</span>
+        <span class="argument">data</span> <span class="argument">=</span> <span class="symbol">dsan</span>
+      <span class="keyword">)</span><span class="keyword">,</span>
+      <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span><span class="keyword">(</span>
+        <span class="argument">id</span> <span class="argument">=</span> <span class="string">"fruits"</span><span class="keyword">,</span>
+        <span class="argument">data</span> <span class="argument">=</span> <span class="symbol">dsfru</span>
+      <span class="keyword">)</span><span class="keyword">,</span>
+      <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span><span class="keyword">(</span>
+        <span class="argument">id</span> <span class="argument">=</span> <span class="string">"cars"</span><span class="keyword">,</span>
+        <span class="argument">data</span> <span class="argument">=</span> <span class="symbol">dscar</span>
+      <span class="keyword">)</span>
+    <span class="keyword">)</span>
+  <span class="keyword">)</span>
+
+<span class="symbol">hc</span></div>
+<strong class='warning'>Warning message:
+file(&quot;&quot;) only supports open = &quot;w+&quot; and open = &quot;w+b&quot;: using the former</strong>
+<strong class='error'>Error in dirname(to): a character vector argument expected</strong>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>hc_drilldown</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

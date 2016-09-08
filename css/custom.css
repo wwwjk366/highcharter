@@ -79,14 +79,11 @@ footer i {
   font-size: 0.9em;
 }
 
-@media screen and (max-height: 600px) {
+@media screen and (max-height: 800px) {
   .desc {
     display: none !important;
   }
-  
-  .section {
-    font-size: 0.8em;  
-  }
+
 }
 
 .hljs {

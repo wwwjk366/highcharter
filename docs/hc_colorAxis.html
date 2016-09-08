@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>hc_colorAxis. highcharter 0.4.0.9999</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">highcharter 0.4.0.9999</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Adding Color Axis options to highchart objects</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='hc_colorAxis.html'>hc_colorAxis</a></span><span class="keyword">(</span><span class="symbol">hc</span><span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>hc</dt>
+      <dd>A <code>highchart</code> <code>htmlwidget</code> object.</dd>
+      <dt>...</dt>
+      <dd>Arguments are defined in <a href = 'http://api.highcharts.com/highmaps#colorAxis'>http://api.highcharts.com/highmaps#colorAxis</a>.</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>Function to set the axis color to highcharts objects.</p>
+
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>
+
+<span class="symbol">nyears</span> <span class="assignement">&lt;-</span> <span class="number">5</span>
+
+<span class="symbol">df</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/expand.grid'>expand.grid</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span><span class="keyword">(</span><span class="number">12</span><span class="keyword">)</span> <span class="keyword">-</span> <span class="number">1</span><span class="keyword">,</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span><span class="keyword">(</span><span class="symbol">nyears</span><span class="keyword">)</span> <span class="keyword">-</span> <span class="number">1</span><span class="keyword">)</span>
+<span class="symbol">df</span><span class="keyword">$</span><span class="symbol">value</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/MathFun'>abs</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">df</span><span class="keyword">)</span><span class="keyword">)</span> <span class="keyword">+</span> <span class="number">10</span> <span class="keyword">*</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span><span class="keyword">(</span><span class="symbol">df</span><span class="keyword">)</span><span class="keyword">)</span><span class="keyword">)</span> <span class="keyword">+</span> <span class="number">10</span>
+<span class="symbol">df</span><span class="keyword">$</span><span class="symbol">value</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/Round'>round</a></span><span class="keyword">(</span><span class="symbol">df</span><span class="keyword">$</span><span class="symbol">value</span><span class="keyword">,</span> <span class="number">2</span><span class="keyword">)</span>
+<span class="symbol">ds</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='list_parse.html'>list_parse2</a></span><span class="keyword">(</span><span class="symbol">df</span><span class="keyword">)</span>
+
+
+<span class="symbol">hc</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='highchart.html'>highchart</a></span><span class="keyword">(</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_chart.html'>hc_chart</a></span><span class="keyword">(</span><span class="argument">type</span> <span class="argument">=</span> <span class="string">"heatmap"</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_title.html'>hc_title</a></span><span class="keyword">(</span><span class="argument">text</span> <span class="argument">=</span> <span class="string">"Simulated values by years and months"</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_xAxis.html'>hc_xAxis</a></span><span class="keyword">(</span><span class="argument">categories</span> <span class="argument">=</span> <span class="symbol">month.abb</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_xAxis.html'>hc_yAxis</a></span><span class="keyword">(</span><span class="argument">categories</span> <span class="argument">=</span> <span class="number">2016</span> <span class="keyword">-</span> <span class="symbol">nyears</span> <span class="keyword">+</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span><span class="keyword">(</span><span class="symbol">nyears</span><span class="keyword">)</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_add_series.html'>hc_add_series</a></span><span class="keyword">(</span><span class="argument">name</span> <span class="argument">=</span> <span class="string">"value"</span><span class="keyword">,</span> <span class="argument">data</span> <span class="argument">=</span> <span class="symbol">ds</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='hc_colorAxis.html'>hc_colorAxis</a></span><span class="keyword">(</span><span class="symbol">hc</span><span class="keyword">,</span> <span class="argument">minColor</span> <span class="argument">=</span> <span class="string">"#FFFFFF"</span><span class="keyword">,</span> <span class="argument">maxColor</span> <span class="argument">=</span> <span class="string">"#434348"</span><span class="keyword">)</span></div>
+<strong class='warning'>Warning message:
+file(&quot;&quot;) only supports open = &quot;w+&quot; and open = &quot;w+b&quot;: using the former</strong>
+<strong class='error'>Error in dirname(to): a character vector argument expected</strong>
+<div class='input'>
+<span class="functioncall"><a href='hc_colorAxis.html'>hc_colorAxis</a></span><span class="keyword">(</span><span class="symbol">hc</span><span class="keyword">,</span> <span class="argument">minColor</span> <span class="argument">=</span> <span class="string">"#FFFFFF"</span><span class="keyword">,</span> <span class="argument">maxColor</span> <span class="argument">=</span> <span class="string">"#434348"</span><span class="keyword">,</span>
+             <span class="argument">type</span> <span class="argument">=</span> <span class="string">"logarithmic"</span><span class="keyword">)</span></div>
+<strong class='warning'>Warning message:
+file(&quot;&quot;) only supports open = &quot;w+&quot; and open = &quot;w+b&quot;: using the former</strong>
+<strong class='error'>Error in dirname(to): a character vector argument expected</strong>
+<div class='input'>
+
+<span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/library'>require</a></span><span class="keyword">(</span><span class="string">"viridisLite"</span><span class="keyword">)</span>
+
+<span class="symbol">n</span> <span class="assignement">&lt;-</span> <span class="number">4</span>
+<span class="symbol">stops</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span><span class="keyword">(</span><span class="argument">q</span> <span class="argument">=</span> <span class="number">0</span><span class="keyword">:</span><span class="symbol">n</span><span class="keyword">/</span><span class="symbol">n</span><span class="keyword">,</span>
+                    <span class="argument">c</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/substr'>substring</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/viridisLite/topics/viridis'>viridis</a></span><span class="keyword">(</span><span class="symbol">n</span> <span class="keyword">+</span> <span class="number">1</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">0</span><span class="keyword">,</span> <span class="number">7</span><span class="keyword">)</span><span class="keyword">,</span>
+                    <span class="argument">stringsAsFactors</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span>
+<span class="symbol">stops</span> <span class="assignement">&lt;-</span> <span class="functioncall"><a href='list_parse.html'>list_parse2</a></span><span class="keyword">(</span><span class="symbol">stops</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='hc_colorAxis.html'>hc_colorAxis</a></span><span class="keyword">(</span><span class="symbol">hc</span><span class="keyword">,</span> <span class="argument">stops</span> <span class="argument">=</span> <span class="symbol">stops</span><span class="keyword">,</span> <span class="argument">max</span> <span class="argument">=</span> <span class="number">75</span><span class="keyword">)</span></div>
+<strong class='warning'>Warning message:
+file(&quot;&quot;) only supports open = &quot;w+&quot; and open = &quot;w+b&quot;: using the former</strong>
+<strong class='error'>Error in dirname(to): a character vector argument expected</strong>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>hc_colorAxis</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

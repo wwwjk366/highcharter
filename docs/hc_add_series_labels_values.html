@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>hc_add_series_labels_values. highcharter 0.4.0.9999</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="index.html">highcharter 0.4.0.9999</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reference.html">Reference</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Shorcut for add series for pie, bar and column charts</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><span class="functioncall"><a href='hc_add_series_labels_values.html'>hc_add_series_labels_values</a></span><span class="keyword">(</span><span class="symbol">hc</span><span class="keyword">,</span> <span class="symbol">labels</span><span class="keyword">,</span> <span class="symbol">values</span><span class="keyword">,</span> <span class="argument">colors</span>&nbsp;<span class="argument">=</span>&nbsp;NULL<span class="keyword">,</span> <span class="symbol">...</span><span class="keyword">)</span></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>hc</dt>
+      <dd>A <code>highchart</code> <code>htmlwidget</code> object.</dd>
+      <dt>labels</dt>
+      <dd>A vector of labels.</dd>
+      <dt>values</dt>
+      <dd>A numeric vector. Same length of <code>labels</code>.</dd>
+      <dt>colors</dt>
+      <dd>A not required color vector (hexadecimal format). Same length of <code>labels</code>.</dd>
+      <dt>...</dt>
+      <dd>Aditional shared arguments for the data series 
+(<a href = 'http://api.highcharts.com/highcharts#series'>http://api.highcharts.com/highcharts#series</a>).</dd>
+    </dl>
+    
+    <div class="Description">
+      <h2>Description</h2>
+
+      <p>This function add data to plot pie, bar and column charts.</p>
+
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class="functioncall"><a href='http://www.rdocumentation.org/packages/utils/topics/data'>data</a></span><span class="keyword">(</span><span class="string">"favorite_bars"</span><span class="keyword">)</span>
+<span class="functioncall"><a href='http://www.rdocumentation.org/packages/utils/topics/data'>data</a></span><span class="keyword">(</span><span class="string">"favorite_pies"</span><span class="keyword">)</span>
+
+<span class="functioncall"><a href='highchart.html'>highchart</a></span><span class="keyword">(</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_title.html'>hc_title</a></span><span class="keyword">(</span><span class="argument">text</span> <span class="argument">=</span> <span class="string">"This is a bar graph describing my favorite pies
+                   including a pie chart describing my favorite bars"</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_title.html'>hc_subtitle</a></span><span class="keyword">(</span><span class="argument">text</span> <span class="argument">=</span> <span class="string">"In percentage of tastiness and awesomeness"</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_add_series_labels_values.html'>hc_add_series_labels_values</a></span><span class="keyword">(</span><span class="symbol">favorite_pies</span><span class="keyword">$</span><span class="symbol">pie</span><span class="keyword">,</span> <span class="symbol">favorite_pies</span><span class="keyword">$</span><span class="symbol">percent</span><span class="keyword">,</span> <span class="argument">name</span> <span class="argument">=</span> <span class="string">"Pie"</span><span class="keyword">,</span>
+                             <span class="argument">colorByPoint</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">type</span> <span class="argument">=</span> <span class="string">"column"</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_add_series_labels_values.html'>hc_add_series_labels_values</a></span><span class="keyword">(</span><span class="symbol">favorite_bars</span><span class="keyword">$</span><span class="symbol">bar</span><span class="keyword">,</span> <span class="symbol">favorite_bars</span><span class="keyword">$</span><span class="symbol">percent</span><span class="keyword">,</span>
+                             <span class="argument">colors</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/substr'>substr</a></span><span class="keyword">(</span><span class="functioncall"><a href='http://www.rdocumentation.org/packages/grDevices/topics/palettes'>terrain.colors</a></span><span class="keyword">(</span><span class="number">5</span><span class="keyword">)</span><span class="keyword">,</span> <span class="number">0</span> <span class="keyword">,</span> <span class="number">7</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">type</span> <span class="argument">=</span> <span class="string">"pie"</span><span class="keyword">,</span>
+                             <span class="argument">name</span> <span class="argument">=</span> <span class="string">"Bar"</span><span class="keyword">,</span> <span class="argument">colorByPoint</span> <span class="argument">=</span> <span class="number">TRUE</span><span class="keyword">,</span> <span class="argument">center</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/c'>c</a></span><span class="keyword">(</span><span class="string">'35%'</span><span class="keyword">,</span> <span class="string">'10%'</span><span class="keyword">)</span><span class="keyword">,</span>
+                             <span class="argument">size</span> <span class="argument">=</span> <span class="number">100</span><span class="keyword">,</span> <span class="argument">dataLabels</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span><span class="keyword">(</span><span class="argument">enabled</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_xAxis.html'>hc_yAxis</a></span><span class="keyword">(</span><span class="argument">title</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span><span class="keyword">(</span><span class="argument">text</span> <span class="argument">=</span> <span class="string">"percentage of tastiness"</span><span class="keyword">)</span><span class="keyword">,</span>
+           <span class="argument">labels</span> <span class="argument">=</span> <span class="functioncall"><a href='http://www.rdocumentation.org/packages/base/topics/list'>list</a></span><span class="keyword">(</span><span class="argument">format</span> <span class="argument">=</span> <span class="string">"{value}%"</span><span class="keyword">)</span><span class="keyword">,</span> <span class="argument">max</span> <span class="argument">=</span> <span class="number">100</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_xAxis.html'>hc_xAxis</a></span><span class="keyword">(</span><span class="argument">categories</span> <span class="argument">=</span> <span class="symbol">favorite_pies</span><span class="keyword">$</span><span class="symbol">pie</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_legend.html'>hc_legend</a></span><span class="keyword">(</span><span class="argument">enabled</span> <span class="argument">=</span> <span class="number">FALSE</span><span class="keyword">)</span> <span class="keyword">%&gt;%</span>
+  <span class="functioncall"><a href='hc_tooltip.html'>hc_tooltip</a></span><span class="keyword">(</span><span class="argument">pointFormat</span> <span class="argument">=</span> <span class="string">"{point.y}%"</span><span class="keyword">)</span></div>
+<strong class='warning'>Warning message:
+file(&quot;&quot;) only supports open = &quot;w+&quot; and open = &quot;w+b&quot;: using the former</strong>
+<strong class='error'>Error in dirname(to): a character vector argument expected</strong>
+<div class='input'></div></pre>
+  </div>
+  <div class="span4 sidebar">
+    <!-- <ul>
+      <li>hc_add_series_labels_values</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+
+
+
+
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="https://getbootstrap.com/2.0.4/">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
