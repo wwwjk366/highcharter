@@ -39,12 +39,6 @@ hc %>% hc_add_theme(hc_theme_ft())
 
 hc %>% hc_add_theme(hc_theme_db())
 
-#' ### Google
-#' 
-#' http://www.google.com/.
-
-hc %>% hc_add_theme(hc_theme_google())
-
 #' ### Flat
 #' 
 #' Inspired by https://github.com/cttobin/ggthemr#flat
@@ -59,6 +53,18 @@ hc %>% hc_add_theme(hc_theme_flatdark())
 #'  and color by http://www.materialui.co/flatuicolors
 
 hc %>% hc_add_theme(hc_theme_smpl())
+
+#' ### Elementary
+#' 
+#' Desing inspired by https://elementary.io
+
+hc %>% hc_add_theme(hc_theme_elementary())
+
+#' ### Google
+#' 
+#' http://www.google.com/.
+
+hc %>% hc_add_theme(hc_theme_google())
 
 #' ### Sparkline
 #' 

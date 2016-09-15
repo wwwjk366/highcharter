@@ -134,6 +134,6 @@ makepage <- function(f){
   
 }
 
-try(makepage(f = "_scripts/highmaps.R"))
+try(makepage(f = "_scripts/themes.R"))
 
 # lapply(rfiles, function(x) { try(makepage(x)) })
