@@ -99,7 +99,7 @@ titles <- infolist %>% map_chr(function(x) x[[1]][2])
 inftxt <- infolist %>% map_chr(function(x) x[[1]][3])
               
 html_links <- paste0(gsub(".R$", "", basename(rfiles)), ".html")
-html_links <- ifelse(html_links == "NA.html", "docs/reference.html", html_links)
+html_links <- ifelse(html_links == "NA.html", "docs/index.html", html_links)
 
 tmplt <- 
 "<a href=\"%s\" class=\"list-group-item text-muted\">
