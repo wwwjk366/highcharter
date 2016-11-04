@@ -122,6 +122,49 @@ highchart() %>%
                 marker = list(symbol = fa_icon_mark("truck")),
                 icon = fa_icon("truck"), name = "truck")
 
+#' ### Grouped Categories ####
+library(purrr)           # map function to make grouped categories argument
+library(dplyr)           # for select function 
+
+Category <- c("Furniture","Furniture","Furniture","Furniture",
+              "Office Supplies","Office Supplies", "Office Supplies", "Office Supplies",
+              "Office Supplies", "Office Supplies", "Office Supplies", "Office Supplies",
+              "Office Supplies", "Technology","Technology","Technology","Technology")
+
+SubCategory <- c("Bookcases","Chairs","Furnishings","Tables","Appliances","Art","Binders","Envelopes", 
+                 "Fasteners","Labels","Paper","Storage",  "Supplies", "Accessories","Copiers","Machines",
+                 "Phones")
+sales <- c(889222.51,920892.65,239840.16,445823.93,614737.91,225594.68,281494.68,104903.88,50156.06,44269.30,
+           150113.36,692903.08,152196.19,463383.33,965899.78,458655.43,1005525.38)
+
+mydf <- data_frame(Category,SubCategory,sales, color = colorize(Category))
+
+categories_grouped <- map(unique(Category), function(x){
+  list(
+    name = x,
+    categories = SubCategory[Category == x]
+  )
+})
+
+
+highchart() %>% 
+  hc_chart(type = "bar") %>% 
+  hc_xAxis(categories = categories_grouped) %>% 
+  hc_add_series(data = list_parse(dplyr::select(mydf, y = sales, color = color)),
+                showInLegend = FALSE)
+
+
+#' ### Exporting CSV ####
+#'
+#' You can export the data to excel file, csv, or show in the html.
+
+hc <- highcharts_demo()
+
+hc %>% 
+  hc_exporting(
+    enabled = TRUE
+  )
+
 
 #' ### Draggable points ####
 #' 

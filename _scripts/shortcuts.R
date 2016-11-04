@@ -164,7 +164,7 @@ data(worldgeojson)
 data(GNI2014, package = "treemap")
 
 dshmstops <- data.frame(q = c(0, exp(1:5)/exp(5)), c = substring(viridis(5 + 1), 0, 7)) %>% 
-  list.parse2()
+  list_parse2()
 
 highchart() %>% 
   hc_title(text = "Charting GNI data") %>% 

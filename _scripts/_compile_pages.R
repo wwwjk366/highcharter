@@ -134,6 +134,5 @@ makepage <- function(f){
   
 }
 
-try(makepage(f = "_scripts/themes.R"))
-
+try(makepage(f = "_scripts/plugins.R"))
 # lapply(rfiles, function(x) { try(makepage(x)) })

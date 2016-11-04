@@ -5,6 +5,7 @@
 rm(list = ls())
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 library("highcharter")
+options(highcharter.theme = NULL)
 
 #'
 #' ## Themes
@@ -65,6 +66,18 @@ hc %>% hc_add_theme(hc_theme_elementary())
 #' http://www.google.com/.
 
 hc %>% hc_add_theme(hc_theme_google())
+
+#' ### Firefox
+#' 
+#' Theme inspired by https://www.mozilla.org/en-US/styleguide/.
+
+hc %>% hc_add_theme(hc_theme_ffx())
+
+#' ### Monokai
+#' 
+#' A well know text editor theme.
+
+hc %>% hc_add_theme(hc_theme_monokai())
 
 #' ### Tufte
 #' 

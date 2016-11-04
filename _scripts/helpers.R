@@ -1,6 +1,7 @@
 get_demos <- function(){
   library("highcharter")
   library("forecast")
+  options(highcharter.theme = hc_theme_smpl())
   data("citytemp")
   data(diamonds, mpg, package = "ggplot2")
   
