@@ -93,8 +93,8 @@ highchart() %>%
   hc_add_series(data = list_parse(dta)) %>% 
   hc_add_theme(hc_theme_tufte())
 
-
 values <- 1 + abs(rnorm(12))
+
 highchart() %>%
   hc_chart(type = "column") %>%
   hc_add_series(data = values) %>%

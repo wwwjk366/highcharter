@@ -5,7 +5,7 @@ get_demos <- function(){
   data("citytemp")
   data(diamonds, mpg, package = "ggplot2")
   
-  p1 <- hchart(mpg, "scatter", x = displ, y = hwy, color = hwy)
+  p1 <- hchart(mpg, "scatter", hcaes(x = displ, y = hwy, color = hwy))
   
   p2 <- hchart(
     forecast(auto.arima(AirPassengers), level = 95, h = 12*3),
@@ -36,8 +36,7 @@ get_demos <- function(){
     hc_add_theme(hc_theme_db()) %>% 
     hc_mapNavigation(enabled = FALSE)
   
-  p5 <- hcboxplot(diamonds$price, diamonds$cut, outliers = FALSE,
-                  showInLegend = FALSE) %>% 
+  p5 <- hcboxplot(diamonds$price, var = diamonds$color, outliers = FALSE) %>% 
     hc_yAxis(min = 0)
   
   

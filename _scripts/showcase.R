@@ -17,22 +17,11 @@ options(highcharter.theme = NULL)
 #' 
 #' <div id ="toc"></div>
 #'
-
-#'
 #' ### Stars
 #' 
 #' Inspired by Nadieh Bremer's [block](http://bl.ocks.org/nbremer/eb0d1fd4118b731d069e2ff98dfadc47).
 #' 
 data(stars)
-
-thm <- hc_theme(
-  chart = list(
-    backgroundColor = "black"
-  ),
-  yAxis = list(
-    gridLineWidth = 0
-  )
-)
 
 colors <- c("#FB1108","#FD150B","#FA7806","#FBE426","#FCFB8F",
             "#F3F5E7", "#C7E4EA","#ABD6E6","#9AD2E1")
@@ -44,14 +33,36 @@ y <- sprintf("{point.%s}",
              c("lum", "temp", "distance"))
 tltip <- tooltip_table(x, y)
 
-
-hchart(stars, "point", x = temp, y = lum, size = radiussun) %>% 
+hchart(stars, "scatter", hcaes(temp, lum, size = radiussun, color = color)) %>% 
+  hc_chart(backgroundColor = "black") %>% 
   hc_xAxis(type = "logarithmic", reversed = TRUE) %>% 
-  hc_yAxis(type = "logarithmic") %>% 
+  hc_yAxis(type = "logarithmic", gridLineWidth = 0) %>% 
   hc_title(text = "Our nearest Stars") %>% 
   hc_subtitle(text = "In a Hertzsprung-Russell diagram") %>% 
-  hc_add_theme(thm) %>% 
-  hc_tooltip(useHTML = TRUE, headerFormat = "", pointFormat = tltip)
+  hc_tooltip(useHTML = TRUE, headerFormat = "",
+             pointFormat = tltip, valueDecimals = 0)
+
+
+#' ### Global temperatures
+#'
+data("globaltemp")
+
+x <- c("Min", "Median", "Max")
+y <- sprintf("{point.%s}", c("lower", "median", "upper"))
+tltip <- tooltip_table(x, y)
+
+hchart(globaltemp, type = "columnrange",
+       hcaes(x = date, low = lower, high = upper, color = median)) %>% 
+  hc_yAxis(tickPositions = c(-2, 0, 1.5, 2),
+           gridLineColor = "#B71C1C",
+           labels = list(format = "{value} C", useHTML = TRUE)) %>% 
+  hc_tooltip(
+    useHTML = TRUE,
+    headerFormat = as.character(tags$small("{point.x: %Y %b}")),
+    pointFormat = tltip
+  ) %>% 
+  hc_add_theme(hc_theme_db())
+
 
 #'
 #' ### Weathers Radials
@@ -60,65 +71,23 @@ hchart(stars, "point", x = temp, y = lum, size = radiussun) %>%
 #' replicated in http://jkunst.com/r/how-to-weather-radials/
 #'       
 data("weather")
+
 x <- c("Min", "Mean", "Max")
 y <- sprintf("{point.%s}",
              c("min_temperaturec", "mean_temperaturec", "max_temperaturec"))
 tltip <- tooltip_table(x, y)
 
 hchart(weather, type = "columnrange",
-       x = date,
-       low = min_temperaturec,
-       high = max_temperaturec,
-       color = mean_temperaturec) %>% 
+       hcaes(x = date, low = min_temperaturec, high = max_temperaturec,
+             color = mean_temperaturec)) %>% 
   hc_chart(polar = TRUE) %>%
-  hc_yAxis(
-    max = 30,
-    min = -10,
-    labels = list(format = "{value} C"),
-    showFirstLabel = FALSE
-  ) %>% 
+  hc_yAxis( max = 30, min = -10, labels = list(format = "{value} C"),
+            showFirstLabel = FALSE) %>% 
   hc_xAxis(
-    title = list(text = ""),
-    gridLineWidth = 0.5,
-    labels = list(format = "{value: %b}")
-  ) %>% 
-  hc_tooltip(
-    useHTML = TRUE,
-    headerFormat = as.character(tags$small("{point.x:%d %B, %Y}")),
-    pointFormat = tltip
-  )
-
-
-#'
-#' ### Global temperatures
-#'
-data("globaltemp")
-
-thm <- hc_theme_darkunica(
-  chart  = list(
-    style = list(fontFamily = "Roboto Condensed"),
-    backgroundColor = "#323331"
-  ),
-  yAxis = list(
-    gridLineColor = "#B71C1C",
-    labels = list(format = "{value} C", useHTML = TRUE)
-  ),
-  plotOptions = list(series = list(showInLegend = FALSE))
-)
-
-x <- c("Min", "Median", "Max")
-y <- sprintf("{point.%s}", c("lower", "median", "upper"))
-tltip <- tooltip_table(x, y)
-
-hchart(globaltemp, type = "columnrange", x = date, low = lower, high = upper,
-       color = median) %>% 
-  hc_yAxis(tickPositions = c(-2, 0, 1.5, 2)) %>% 
-  hc_tooltip(
-    useHTML = TRUE,
-    headerFormat = as.character(tags$small("{point.x: %Y %b}")),
-    pointFormat = tltip
-  ) %>% 
-  hc_add_theme(thm)
+    title = list(text = ""), gridLineWidth = 0.5,
+    labels = list(format = "{value: %b}")) %>% 
+  hc_tooltip(useHTML = TRUE, pointFormat = tltip,
+             headerFormat = as.character(tags$small("{point.x:%d %B, %Y}")))
 
 #'
 #' ### The Impact of Vaccines
@@ -133,8 +102,6 @@ fntltp <- JS("function(){
   Highcharts.numberFormat(this.point.value, 2);
 }")
 
-stpscol <- color_stops(10, rev(viridis(10)))
-
 plotline <- list(
   color = "#fde725", value = 1963, width = 2, zIndex = 5,
   label = list(
@@ -143,23 +110,17 @@ plotline <- list(
     rotation = 0, y = -5)
 )
 
-thm <- hc_theme_smpl(
-  yAxis = list(
-    offset = -20,
-    tickLength =  0,
-    gridLineWidth = 0,
-    minorGridLineWidth = 0,
-    labels = list(style = list(fontSize = "8px"))
-  )
-)
-
-hchart(vaccines, "heatmap", x = year, y = state, value = count) %>% 
-  hc_colorAxis(stops = stpscol, type = "logarithmic") %>% 
-  hc_yAxis(reversed = TRUE) %>% 
+hchart(vaccines, "heatmap", hcaes(x = year, y = state, value = count)) %>% 
+  hc_colorAxis(stops = color_stops(10, rev(viridis(10))),
+               type = "logarithmic") %>% 
+  hc_yAxis(reversed = TRUE, offset = -20, tickLength = 0,
+           gridLineWidth = 0, minorGridLineWidth = 0,
+           labels = list(style = list(fontSize = "8px"))) %>% 
   hc_tooltip(formatter = fntltp) %>% 
   hc_xAxis(plotLines = list(plotline)) %>%
   hc_title(text = "Infectious Diseases and Vaccines") %>% 
   hc_legend(layout = "vertical", verticalAlign = "top",
             align = "right", valueDecimals = 0) %>% 
-  hc_add_theme(thm) %>% 
   hc_size(height = 800)
+
+

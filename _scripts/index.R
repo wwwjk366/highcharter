@@ -10,7 +10,7 @@ rm(list = ls())
 try(source("_scripts/helpers.R"))
 try(source("helpers.R"))
 options(download.file.method = "libcurl")
-get_demos()
+# get_demos()
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 options(highcharter.theme = hc_theme_smpl())
 
@@ -45,7 +45,7 @@ options(highcharter.theme = hc_theme_smpl())
 library("highcharter")
 data(diamonds, mpg, package = "ggplot2")
 
-hchart(mpg, "scatter", x = displ, y = hwy, group = class)
+hchart(mpg, "scatter", hcaes(x = displ, y = hwy, group = class))
 
 #'
 #' Or using the highcharts API
@@ -100,8 +100,8 @@ eurkpw <- getSymbols("EUR/KPW", src = "oanda", auto.assign = FALSE)
 dates <- as.Date(c("2015-05-08", "2015-09-12"), format = "%Y-%m-%d")
 
 highchart(type = "stock") %>% 
-  hc_add_series_xts(usdjpy, id = "usdjpy") %>% 
-  hc_add_series_xts(eurkpw, id = "eurkpw") %>% 
+  hc_add_series(usdjpy, id = "usdjpy") %>% 
+  hc_add_series(eurkpw, id = "eurkpw") %>% 
   hc_add_series_flags(dates, title = c("E1", "E2"), 
                       text = c("Event 1", "Event 2"),
                       id = "usdjpy")

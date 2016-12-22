@@ -28,15 +28,15 @@ options(highcharter.theme = hc_theme_smpl())
 #' 
 data(diamonds, economics_long, mpg, package = "ggplot2")
 
-hchart(mpg, "scatter", x = displ, y = hwy, group = class)
+hchart(mpg, "scatter", hcaes(x = displ, y = hwy, group = class))
 
 mpgman2 <- count(mpg, class, year)
-hchart(mpgman2, "column", x = class, y = n, group = year)
+hchart(mpgman2, "column", hcaes(x = class, y = n, group = year))
 
 mpgman3 <- group_by(mpg, manufacturer) %>% 
   summarise(n = n(), unique = length(unique(model))) %>% 
   arrange(-n, -unique)
-hchart(mpgman3, "treemap", x = manufacturer, value = n, color = unique)
+hchart(mpgman3, "treemap", hcaes(x = manufacturer, value = n, color = unique))
 
 #' 
 #' Check automatically if the x column is date class
@@ -44,16 +44,16 @@ hchart(mpgman3, "treemap", x = manufacturer, value = n, color = unique)
 library("dplyr")
 
 economics_long2 <- filter(economics_long, variable %in% c("pop", "uempmed", "unemploy"))
-hchart(economics_long2, "line", x = date, y = value01, group = variable)
+hchart(economics_long2, "line", hcaes(x = date, y = value01, group = variable))
 
 #' ### Numeric & Histograms
 hchart(diamonds$price) 
 
 #' ### Densities
-hchart(density(diamonds$price), area = TRUE, color = "#B71C1C", name = "Price")
+hchart(density(diamonds$price), type = "area", color = "#B71C1C", name = "Price")
 
 #' ### Character & Factor
-hchart(diamonds$cut, colorByPoint = TRUE)
+hchart(diamonds$cut, type = "column")
 
 #' ### Time Series
 hchart(LakeHuron)
@@ -106,12 +106,10 @@ hchart(x)
 
 #' ### Autocovariance & Autocorrelation
 x <- acf(diff(AirPassengers), plot = FALSE)
-
 hchart(x)
 
 #' ### Multivariate Time series
 x <- cbind(mdeaths, fdeaths)
-
 hchart(x)
 
 #' ### Survival Models
@@ -119,9 +117,7 @@ library("survival")
 library("dplyr")
 
 data(lung)
-
 lung <- mutate(lung, sex = ifelse(sex == 1, "Male", "Female"))
-
 fit <- survfit(Surv(time, status) ~ sex, data = lung) 
 
 hchart(fit, ranges = TRUE)
@@ -132,14 +128,12 @@ hchart(princomp(USArrests, cor = TRUE))
 #' ### Matrix
 #' 
 data(volcano)
-
 hchart(volcano)
 
 #' ### Distance matrix 
 #' 
 mtcars2 <- mtcars[1:20, ]
 x <- dist(mtcars2)
-
 hchart(x)
 
 #' ### Correlation matrix
