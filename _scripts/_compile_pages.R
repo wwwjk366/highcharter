@@ -77,13 +77,13 @@ infolist <- list(
          paste(fa_icon("certificate"), "Shiny"),
          "Output & Render functions")),
   list(c("_scripts/highcharts.R",
-         paste(fa_icon("area-chart"), "Highcharts Examples"),
+         paste(fa_icon("area-chart"), "Highcharts"),
          "Some fun and miscellaneous")),
   list(c("_scripts/highstock.R",
-         paste(fa_icon("line-chart"), "Highstock Examples"),
+         paste(fa_icon("line-chart"), "Highstock"),
          "Using the quantmod package")),
   list(c("_scripts/highmaps.R",
-         paste(fa_icon("map"), "Highmaps Examples"),
+         paste(fa_icon("map"), "Highmaps"),
          "Give me the geojson data")),
   list(c("_scripts/plugins.R",
          paste(fa_icon("plug"), "Plugins"),
@@ -134,5 +134,5 @@ makepage <- function(f){
   
 }
 
-try(makepage(f = "_scripts/plugins.R"))
+try(makepage(f = "_scripts/highstock.R"))
 # lapply(rfiles, function(x) { try(makepage(x)) })
