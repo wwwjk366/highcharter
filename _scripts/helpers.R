@@ -28,15 +28,13 @@ get_demos <- function(){
     c = substring(viridis(5 + 1), 0, 7)) %>% 
     list_parse2()
   
-  p4 <- highchart() %>% 
-    hc_add_series_map(worldgeojson, GNI2014, name = "",
-                      value = "GNI", joinBy = "iso3") %>% 
+  p4 <- hcmap(data = GNI2014, name = "", value = "GNI", joinBy = c("iso-a3", "iso3")) %>% 
     hc_colorAxis(stops = dshmstops) %>% 
     hc_legend(enabled = FALSE) %>% 
     hc_add_theme(hc_theme_db()) %>% 
     hc_mapNavigation(enabled = FALSE)
   
-  p5 <- hcboxplot(diamonds$price, var = diamonds$color, outliers = FALSE) %>% 
+  p5 <- hcboxplot(diamonds$price, var = diamonds$color, outliers = FALSE, name = "price") %>% 
     hc_yAxis(min = 0)
   
   

@@ -10,7 +10,7 @@ rm(list = ls())
 try(source("_scripts/helpers.R"))
 try(source("helpers.R"))
 options(download.file.method = "libcurl")
-# get_demos()
+get_demos()
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 options(highcharter.theme = hc_theme_smpl())
 
@@ -112,15 +112,12 @@ highchart(type = "stock") %>%
 #' You can chart maps and choropleth using the highmaps module.
 
 data(unemployment)
-data(uscountygeojson)
 
-highchart() %>% 
-  hc_add_series_map(
-    uscountygeojson, unemployment,
-    name = "Unemployment", value = "value", joinBy = "code") %>% 
+hcmap("countries/us/us-all-all", data = unemployment,
+      name = "Unemployment", value = "value", joinBy = c("hc-key", "code"),
+      borderColor = "transparent") %>%
   hc_colorAxis(dataClasses = color_classes(c(seq(0, 10, by = 2), 50))) %>% 
   hc_legend(layout = "vertical", align = "right",
-            floating = TRUE, valueDecimals = 0,
-            valueSuffix = "%") 
+            floating = TRUE, valueDecimals = 0, valueSuffix = "%") 
 
 
