@@ -1,17 +1,33 @@
-/* navbar and container things */
-.main-container, .container-fluid {
-  max-width: 1024px;
-  margin-left: auto;
-  margin-right: auto;
+@import url("https://fonts.googleapis.com/css?family=Alegreya+Sans|Alegreya+Sans+SC");
+
+@font-face {
+  font-family: 'Datalegreya-Gradient';
+  src: url('http://cdn.rawgit.com/figs-lab/datalegreya/master/font-files/Datalegreya-Gradient.otf');
+  font-weight: normal;
+  font-style: normal;
 }
 
-.tweakbrand {
-  /* vertcal alling */
-  display: inline-block;
-  vertical-align: middle;
-  float: none;
-  margin-left: 5px;
-  font-family: 'Roboto Condensed', sans-serif;
+body {
+  font-family: "Alegreya Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-feature-settings: 'kern' on, 'liga' on, 'calt' on;
+  -moz-font-feature-settings: 'kern' on, 'liga' on, 'calt' on;
+  -webkit-font-feature-settings: 'kern' on, 'liga' on, 'calt' on;
+  -ms-font-feature-settings: 'kern' on, 'liga' on, 'calt' on;
+  font-feature-settings: 'kern' on, 'liga' on, 'calt' on;
+  font-variant-ligatures: common-ligatures discretionary-ligatures contextual;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* navbar and container things */
+.main-container, .container-fluid {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* footer icons */
@@ -25,13 +41,22 @@ footer i {
   padding-top: 80px;
 }
 
-#rcontent h1,
-#rcontent h2,
-#rcontent h3,
-#rcontent h4,
-#rcontent h5,
-#rcontent h6 {
-  font-family: 'Roboto Condensed', sans-serif;
+#brand {
+  font-family: 'Datalegreya-Gradient', sans-serif;
+  font-size: 3em;
+  text-align:center;
+}
+
+.tweakbrand {
+  /* vertcal alling */
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+  margin-left: 5px
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Alegreya Sans SC', sans-serif;
 }
 
 #rcontent h2 {
@@ -49,9 +74,10 @@ footer i {
 
 #rcontent p,
 #rcontent li {
+  font-family: "Alegreya Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   /* http://www.getmdl.io/templates/blog/entry.html */
   margin: 16px auto;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 30px;
   margin-bottom: 1em;
 }
@@ -61,7 +87,7 @@ footer i {
   line-height: 5px; !important
   margin-bottom: 0em;
   list-style-type: none;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Alegreya Sans', sans-serif;
 } 
 
 .toc li:before {
