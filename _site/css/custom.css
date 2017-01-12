@@ -45,6 +45,8 @@ footer i {
   font-family: 'Datalegreya-Gradient', sans-serif;
   font-size: 3em;
   text-align:center;
+  vertical-align:middle;
+  display:table-cell;
 }
 
 .tweakbrand {
