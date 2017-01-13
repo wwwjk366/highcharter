@@ -1,5 +1,6 @@
 .jekyll-metadata
 
+_site
 _site/*
 # History files
 .Rhistory
