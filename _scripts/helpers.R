@@ -22,21 +22,21 @@ get_demos <- function(){
   
   p1 <- hchart(mpg, "scatter", hcaes(x = displ, y = hwy, color = hwy), name = "Cars")
   
-  p2 <- hchart(forecast(auto.arima(AirPassengers), level = 95, h = 12*3))
+  p2 <- hchart(forecast(ets(AirPassengers), level = 95, h = 12*2),
+               fillOpacity = 0.7) %>% 
+    hc_xAxis(min = datetime_to_timestamp(as.Date("1955-01-01")))
   
-  p3 <- hcmap(data = GNI2014, name = "", value = "GNI",
-              joinBy = c("iso-a3", "iso3"), nullColor = "#FAFAFA") %>% 
+  p3 <- hcmap("custom/world-robinson-lowres", data = GNI2014, name = "", value = "GNI",
+              joinBy = c("iso-a3", "iso3"), nullColor = "#932667") %>% 
     hc_colorAxis(stops = color_stops(colors = inferno(10, begin = 0.1)),
                  type = "logarithmic") %>% 
     hc_legend(enabled = FALSE) %>% 
     hc_mapNavigation(enabled = FALSE)
   
-  p4 <- hcboxplot(diamonds$price, var = diamonds$color,
-                  outliers = FALSE, name = "price") %>% 
-    hc_yAxis(min = 0)
+  p4 <- hcboxplot(iris$Sepal.Length, var = iris$Species, name = "Sepal Length",
+                  color = "red")
   
-  
-  N <- 20
+  N <- 30
   net <- sample_gnp(N, p = .1)
   wc <- cluster_walktrap(net)
   V(net)$label <- 1:N
@@ -47,9 +47,9 @@ get_demos <- function(){
   V(net)$size <- V(net)$degree
   V(net)$comm <- membership(wc)
   V(net)$color <- colorize(membership(wc), magma(length(wc)))
-  p5 <- hchart(net, layout = layout_with_fr)
+  p5 <- hchart(net, layout = layout_with_fr, maxSize = 15)
   
-  p6 <- hcwaffle(c("car", "truck", "plane"), c(10, 7, 5),
+  p6 <- hcwaffle(c("car", "truck", "plane"), c(15, 10, 5), rows = 3,
                  icons = c("car", "truck", "plane")) %>% 
     hc_colors(hex_to_rgba(viridis(3, end = .8)))
   
@@ -75,15 +75,16 @@ get_demos <- function(){
     select(-Var1) %>% 
     as.matrix() 
   
+  colnames(m) <- rownames(m) <-  NULL
+  
   p8 <- hchart(m) %>% 
     hc_add_theme(hc_theme_null()) %>% 
     hc_legend(enabled = FALSE) %>% 
     hc_colorAxis(stops = color_stops(colors = inferno(10, begin = 0.1)))
   
+  plots <- list(p1, p2, p3, p8, p4, p7, p5, p6)
   
-  plots <- list(p1, p2, p3, p4, p5, p6, p7, p8)
-  
-  plots <- map(plots, hc_size, height = 250)
+  plots <- map(plots, hc_size, height = 300)
   
   divplots <- map(plots, tags$div, class = "col-md-6")
   
