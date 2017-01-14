@@ -2,9 +2,8 @@
 #' layout: post
 #' ---
 #' 
-
 #' 
-#' # <div id="brand">h|1i|0g|3h|2c|1h|2a|1r|3t|2e|1r|2{rpackage}</div>
+#' <h1><div id="brand">h|1i|0g|3h|2c|1h|2a|1r|3t|2e|1r|2{rpackage}</div></h1>
 #' 
 #+echo=FALSE
 rm(list = ls())

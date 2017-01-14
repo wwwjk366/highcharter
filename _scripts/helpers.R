@@ -26,8 +26,9 @@ get_demos <- function(){
                fillOpacity = 0.7) %>% 
     hc_xAxis(min = datetime_to_timestamp(as.Date("1955-01-01")))
   
-  p3 <- hcmap("custom/world-robinson-lowres", data = GNI2014, name = "", value = "GNI",
-              joinBy = c("iso-a3", "iso3"), nullColor = "#932667") %>% 
+  p3 <- hcmap("custom/world-robinson-lowres", data = GNI2014, name = "", 
+              value = "GNI", joinBy = c("iso-a3", "iso3"), 
+              nullColor = "#932667") %>% 
     hc_colorAxis(stops = color_stops(colors = inferno(10, begin = 0.1)),
                  type = "logarithmic") %>% 
     hc_legend(enabled = FALSE) %>% 
@@ -36,6 +37,7 @@ get_demos <- function(){
   p4 <- hcboxplot(iris$Sepal.Length, var = iris$Species, name = "Sepal Length",
                   color = "red")
   
+  set.seed(12313)
   N <- 30
   net <- sample_gnp(N, p = .1)
   wc <- cluster_walktrap(net)
@@ -44,14 +46,15 @@ get_demos <- function(){
   V(net)$page_rank <- round(page.rank(net)$vector, 2)
   V(net)$betweenness <- round(betweenness(net), 2)
   V(net)$degree <- degree(net)
-  V(net)$size <- V(net)$degree
+  V(net)$size <- V(net)$degree + 1
   V(net)$comm <- membership(wc)
   V(net)$color <- colorize(membership(wc), magma(length(wc)))
   p5 <- hchart(net, layout = layout_with_fr, maxSize = 15)
   
-  p6 <- hcwaffle(c("car", "truck", "plane"), c(15, 10, 5), rows = 3,
-                 icons = c("car", "truck", "plane")) %>% 
-    hc_colors(hex_to_rgba(viridis(3, end = .8)))
+  p6 <- hciconarray(c("bicycle", "taxi", "subway"), c(17, 12, 6), rows = 4,
+                 icons = c("bicycle", "taxi", "subway"),
+                 showInLegend = TRUE) %>% 
+    hc_colors(c("darkgreen", "#CCCC00", "#808183"))
   
   p7 <- highchart() %>% 
     hc_add_series(density(rnorm(100000)),
