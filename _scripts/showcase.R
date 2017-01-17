@@ -29,8 +29,7 @@ colors <- c("#FB1108","#FD150B","#FA7806","#FBE426","#FCFB8F",
 stars$color <- colorize(log(stars$temp), colors)
 
 x <- c("Luminosity", "Temperature", "Distance")
-y <- sprintf("{point.%s}",
-             c("lum", "temp", "distance"))
+y <- sprintf("{point.%s:.2f}", c("lum", "temp", "distance"))
 tltip <- tooltip_table(x, y)
 
 hchart(stars, "scatter", hcaes(temp, lum, size = radiussun, color = color)) %>% 
@@ -39,8 +38,7 @@ hchart(stars, "scatter", hcaes(temp, lum, size = radiussun, color = color)) %>%
   hc_yAxis(type = "logarithmic", gridLineWidth = 0) %>% 
   hc_title(text = "Our nearest Stars") %>% 
   hc_subtitle(text = "In a Hertzsprung-Russell diagram") %>% 
-  hc_tooltip(useHTML = TRUE, headerFormat = "",
-             pointFormat = tltip, valueDecimals = 0)
+  hc_tooltip(useHTML = TRUE, headerFormat = "", pointFormat = tltip)
 
 
 #' ### Global temperatures
@@ -73,8 +71,7 @@ hchart(globaltemp, type = "columnrange",
 data("weather")
 
 x <- c("Min", "Mean", "Max")
-y <- sprintf("{point.%s}",
-             c("min_temperaturec", "mean_temperaturec", "max_temperaturec"))
+y <- sprintf("{point.%s}", c("min_temperaturec", "mean_temperaturec", "max_temperaturec"))
 tltip <- tooltip_table(x, y)
 
 hchart(weather, type = "columnrange",
@@ -111,7 +108,7 @@ plotline <- list(
 )
 
 hchart(vaccines, "heatmap", hcaes(x = year, y = state, value = count)) %>% 
-  hc_colorAxis(stops = color_stops(10, rev(viridis(10))),
+  hc_colorAxis(stops = color_stops(10, rev(inferno(10))),
                type = "logarithmic") %>% 
   hc_yAxis(reversed = TRUE, offset = -20, tickLength = 0,
            gridLineWidth = 0, minorGridLineWidth = 0,
