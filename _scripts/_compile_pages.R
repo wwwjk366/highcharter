@@ -134,5 +134,5 @@ makepage <- function(f){
   
 }
 
-try(makepage(f = "_scripts/showcase.R"))
+try(makepage(f = "_scripts/highcharts.R"))
 # lapply(rfiles, function(x) { try(makepage(x)) })

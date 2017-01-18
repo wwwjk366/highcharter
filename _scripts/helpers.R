@@ -38,8 +38,8 @@ get_demos <- function(){
                   color = "red")
   
   set.seed(12313)
-  N <- 30
-  net <- sample_gnp(N, p = .1)
+  N <- 22
+  net <- sample_pa(N)
   wc <- cluster_walktrap(net)
   V(net)$label <- 1:N
   V(net)$name <- 1:N
@@ -49,7 +49,7 @@ get_demos <- function(){
   V(net)$size <- V(net)$degree + 1
   V(net)$comm <- membership(wc)
   V(net)$color <- colorize(membership(wc), magma(length(wc)))
-  p5 <- hchart(net, layout = layout_with_fr, maxSize = 15)
+  p5 <- hchart(net, layout = layout_with_fr, maxSize = 13)
   
   p6 <- hciconarray(c("bicycle", "taxi", "subway"), c(17, 12, 6), rows = 4,
                  icons = c("bicycle", "taxi", "subway"),

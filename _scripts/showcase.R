@@ -38,7 +38,8 @@ hchart(stars, "scatter", hcaes(temp, lum, size = radiussun, color = color)) %>%
   hc_yAxis(type = "logarithmic", gridLineWidth = 0) %>% 
   hc_title(text = "Our nearest Stars") %>% 
   hc_subtitle(text = "In a Hertzsprung-Russell diagram") %>% 
-  hc_tooltip(useHTML = TRUE, headerFormat = "", pointFormat = tltip)
+  hc_tooltip(useHTML = TRUE, headerFormat = "", pointFormat = tltip) %>% 
+  hc_size(height = 600)
 
 
 #' ### Global temperatures

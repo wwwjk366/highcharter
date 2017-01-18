@@ -5,6 +5,7 @@
 #+echo=FALSE
 rm(list = ls())
 library("highcharter")
+options(highcharter.theme = hc_theme_smpl())
 
 #'
 #' ## Highcharts Examples
@@ -53,10 +54,8 @@ highchart() %>%
                             return (this.x + ': ' + this.y + ' ' + unts)
                             }}"),
              useHTML = TRUE) %>% 
-  hc_add_series(name = "Rainfall", type = "column",
-                data = rainfall, yAxis = 1) %>% 
-  hc_add_series(name = "Temperature", type = "spline",
-                data = temperature) %>% 
+  hc_add_series(name = "Rainfall", type = "column", data = rainfall, yAxis = 1) %>% 
+  hc_add_series(name = "Temperature", type = "spline", data = temperature) %>% 
   hc_add_series(name = "Sunshine", type = "pie",
                 data = list(list(y = 2020, name = "Sunshine hours",
                                  sliced = TRUE, color = col1),
@@ -65,6 +64,70 @@ highchart() %>%
                                  dataLabels = list(enabled = FALSE))),
                 center = c('20%', 45),
                 size = 80)
+
+#' ### Some flexibility
+#' 
+#' Same data a lot of charts!
+#' 
+library(dplyr)
+library(stringr)
+library(purrr)
+library(bsplus)
+
+n <- 5
+
+set.seed(123)
+
+df <- data.frame(x = seq_len(n) - 1) %>% 
+  mutate(
+    y = 10 + x + 10 * sin(x),
+    y = round(y, 1),
+    z = (x*y) - median(x*y),
+    e = 10 * abs(rnorm(length(x))) + 2,
+    e = round(e, 1),
+    low = y - e,
+    high = y + e,
+    value = y,
+    name = sample(fruit[str_length(fruit) <= 5], size = n),
+    color = head(getOption("highcharter.theme")$color, n)
+  )
+
+df
+
+create_hc <- function(t) {
+  
+  dont_rm_high_and_low <- c("arearange", "areasplinerange",
+                            "columnrange", "errorbar")
+  
+  is_polar <- str_detect(t, "polar")
+  
+  t <- str_replace(t, "polar", "")
+  
+  if(!t %in% dont_rm_high_and_low) df <- df %>% select(-e, -low, -high)
+
+  
+  highchart() %>%
+    hc_title(text = paste(ifelse(is_polar, "polar ", ""), t),
+             style = list(fontSize = "15px")) %>% 
+    hc_chart(type = t,
+             polar = is_polar) %>% 
+    hc_xAxis(categories = df$name) %>% 
+    hc_add_series(df, name = "Fruit Consumption", showInLegend = FALSE) 
+  
+}
+
+hcs <- c("line", "spline",  "area", "areaspline",
+  "column", "bar", "waterfall" , "funnel", "pyramid",
+  "pie" , "treemap", "scatter", "bubble",
+  "arearange", "areasplinerange", "columnrange", "errorbar",
+  "polygon", "polarline", "polarcolumn")  %>% 
+  map(create_hc) 
+
+#+echo=FALSE
+hcs %>% 
+  map(hc_size, height = 300) %>% 
+  map(tags$div, class = "col-sm-4") %>% 
+  tags$div(class = "row")
 
 #'
 #' ### Chart Color Gradient
@@ -102,161 +165,148 @@ highchart() %>%
           )
         )
       )
-    )
-
-
-#'
-#' ### Gauges like Apple Watch
-#' 
-#' http://www.highcharts.com/blog/206-activity-gauges-like-apple-watch
-#' 
-highchart(width = 400, height = 400) %>% 
-  hc_chart(
-    type = "solidgauge",
-    backgroundColor = "#F0F0F0",
-    marginTop = 50
-  ) %>% 
-  hc_title(
-    text = "Activity",
-    style = list(
-      fontSize = "24px"
-    )
-  ) %>% 
-  hc_tooltip(
-    borderWidth = 0,
-    backgroundColor = 'none',
-    shadow = FALSE,
-    style = list(
-      fontSize = '16px'
-    ),
-    pointFormat = '{series.name}<br><span style="font-size:2em; color: {point.color}; font-weight: bold">{point.y}%</span>',
-    positioner = JS("function (labelWidth, labelHeight) {
-                    return {
-                    x: 200 - labelWidth / 2,
-                    y: 180
-                    };
-                    }")
     ) %>% 
-  hc_pane(
-    startAngle = 0,
-    endAngle = 360,
-    background = list(
-      list(
-        outerRadius = '112%',
-        innerRadius = '88%',
-        backgroundColor = JS("Highcharts.Color('#F62366').setOpacity(0.1).get()"),
-        borderWidth =  0
-      ),
-      list(
-        outerRadius = '87%',
-        innerRadius = '63%',
-        backgroundColor = JS("Highcharts.Color('#9DFF02').setOpacity(0.1).get()"),
-        borderWidth = 0
-      ),
-      list(
-        outerRadius = '62%',
-        innerRadius =  '38%',
-        backgroundColor = JS("Highcharts.Color('#0CCDD6').setOpacity(0.1).get()"),
-        borderWidth = 0
-      )
-    )
-  ) %>% 
-  hc_yAxis(
-    min = 0,
-    max = 100,
-    lineWidth = 0,
-    tickPositions = list()
-  ) %>% 
-  hc_plotOptions(
-    solidgauge = list(
-      borderWidth = '34px',
-      dataLabels = list(
-        enabled = FALSE
-      ),
-      linecap = 'round',
-      stickyTracking = FALSE
-    )
-  ) %>% 
-  hc_add_series(
-    name = "Move",
-    borderColor = JS("Highcharts.getOptions().colors[0]"),
-    data = list(list(
-      color = JS("Highcharts.getOptions().colors[0]"),
-      radius = "100%",
-      innerRadius = "100%",
-      y = 80
-    ))
-  ) %>% 
-  hc_add_series(
-    name = "Exercise",
-    borderColor = JS("Highcharts.getOptions().colors[1]"),
-    data = list(list(
-      color = JS("Highcharts.getOptions().colors[1]"),
-      radius = "75%",
-      innerRadius = "75%",
-      y = 65
-    ))
-  ) %>% 
-  hc_add_series(
-    name = "Stand",
-    borderColor = JS("Highcharts.getOptions().colors[2]"),
-    data = list(list(
-      color = JS("Highcharts.getOptions().colors[2]"),
-      radius = "50%",
-      innerRadius = "50%",
-      y = 50
-    ))
-  )
+  hc_add_theme(hc_theme_null())
 
-#'
-#' ### A spiderweb chart 
-#'
-#' Highcharts support a range of different chart types so data 
-#' can be displayed in a meaningfull way. Highcharter inherit
-#' all this awesome features. Here's is an example how make a 
-#' spiderweb chart^[Example proposed by
-#' @johnstantongeddes (https://github.com/johnstantongeddes)].
-#' 
 
-highchart() %>% 
-  hc_chart(polar = TRUE, type = "line") %>% 
-  hc_title(text = "Budget vs Spending") %>% 
-  hc_xAxis(categories = c('Sales', 'Marketing', 'Development', 'Customer Support', 
-                          'Information Technology', 'Administration'),
-           tickmarkPlacement = 'on',
-           lineWidth = 0) %>% 
-  hc_yAxis(gridLineInterpolation = 'polygon',
-           lineWidth = 0,
-           min = 0) %>% 
-  hc_series(
-    list(
-      name = "Allocated Budget",
-      data = c(43000, 19000, 60000, 35000, 17000, 10000),
-      pointPlacement = 'on'
-    ),
-    list(
-      name = "Actual Spending",
-      data = c(50000, 39000, 42000, 31000, 26000, 14000),
-      pointPlacement = 'on'
-    )
-  )
+#+echo=FALSE
+# #'
+# #' ### A spiderweb chart 
+# #'
+# #' Highcharts support a range of different chart types so data 
+# #' can be displayed in a meaningfull way. Highcharter inherit
+# #' all this awesome features. Here's is an example how make a 
+# #' spiderweb chart^[Example proposed by
+# #' @johnstantongeddes (https://github.com/johnstantongeddes)].
+# #' 
+# 
+# highchart() %>% 
+#   hc_chart(polar = TRUE, type = "line") %>% 
+#   hc_title(text = "Budget vs Spending") %>% 
+#   hc_xAxis(categories = c('Sales', 'Marketing', 'Development', 'Customer Support', 
+#                           'Information Technology', 'Administration'),
+#            tickmarkPlacement = 'on',
+#            lineWidth = 0) %>% 
+#   hc_yAxis(gridLineInterpolation = 'polygon',
+#            lineWidth = 0,
+#            min = 0) %>% 
+#   hc_series(
+#     list(
+#       name = "Allocated Budget",
+#       data = c(43000, 19000, 60000, 35000, 17000, 10000),
+#       pointPlacement = 'on'
+#     ),
+#     list(
+#       name = "Actual Spending",
+#       data = c(50000, 39000, 42000, 31000, 26000, 14000),
+#       pointPlacement = 'on'
+#     )
+#   )
+#
+# #' ### Gauges like Apple Watch
+# #' 
+# #' http://www.highcharts.com/blog/206-activity-gauges-like-apple-watch
+# #' 
+# highchart(width = 400, height = 400) %>% 
+#   hc_chart(
+#     type = "solidgauge",
+#     backgroundColor = "#F0F0F0",
+#     marginTop = 50
+#   ) %>% 
+#   hc_title(
+#     text = "Activity",
+#     style = list(
+#       fontSize = "24px"
+#     )
+#   ) %>% 
+#   hc_tooltip(
+#     borderWidth = 0,
+#     backgroundColor = 'none',
+#     shadow = FALSE,
+#     style = list(
+#       fontSize = '16px'
+#     ),
+#     pointFormat = '{series.name}<br><span style="font-size:2em; color: {point.color}; font-weight: bold">{point.y}%</span>',
+#     positioner = JS("function (labelWidth, labelHeight) {
+#                     return {
+#                     x: 200 - labelWidth / 2,
+#                     y: 180
+#                     };
+#                     }")
+#     ) %>% 
+#   hc_pane(
+#     startAngle = 0,
+#     endAngle = 360,
+#     background = list(
+#       list(
+#         outerRadius = '112%',
+#         innerRadius = '88%',
+#         backgroundColor = JS("Highcharts.Color('#F62366').setOpacity(0.1).get()"),
+#         borderWidth =  0
+#       ),
+#       list(
+#         outerRadius = '87%',
+#         innerRadius = '63%',
+#         backgroundColor = JS("Highcharts.Color('#9DFF02').setOpacity(0.1).get()"),
+#         borderWidth = 0
+#       ),
+#       list(
+#         outerRadius = '62%',
+#         innerRadius =  '38%',
+#         backgroundColor = JS("Highcharts.Color('#0CCDD6').setOpacity(0.1).get()"),
+#         borderWidth = 0
+#       )
+#     )
+#   ) %>% 
+#   hc_yAxis(
+#     min = 0,
+#     max = 100,
+#     lineWidth = 0,
+#     tickPositions = list()
+#   ) %>% 
+#   hc_plotOptions(
+#     solidgauge = list(
+#       borderWidth = '34px',
+#       dataLabels = list(
+#         enabled = FALSE
+#       ),
+#       linecap = 'round',
+#       stickyTracking = FALSE
+#     )
+#   ) %>% 
+#   hc_add_series(
+#     name = "Move",
+#     borderColor = JS("Highcharts.getOptions().colors[0]"),
+#     data = list(list(
+#       color = JS("Highcharts.getOptions().colors[0]"),
+#       radius = "100%",
+#       innerRadius = "100%",
+#       y = 80
+#     ))
+#   ) %>% 
+#   hc_add_series(
+#     name = "Exercise",
+#     borderColor = JS("Highcharts.getOptions().colors[1]"),
+#     data = list(list(
+#       color = JS("Highcharts.getOptions().colors[1]"),
+#       radius = "75%",
+#       innerRadius = "75%",
+#       y = 65
+#     ))
+#   ) %>% 
+#   hc_add_series(
+#     name = "Stand",
+#     borderColor = JS("Highcharts.getOptions().colors[2]"),
+#     data = list(list(
+#       color = JS("Highcharts.getOptions().colors[2]"),
+#       radius = "50%",
+#       innerRadius = "50%",
+#       y = 50
+#     ))
+#   )
 
-#' 
-#' ### Not so usual ones
-#' 
-#' Like funnel.
-#' 
 
-highchart() %>% 
-  hc_chart(type = "funnel") %>% 
-  hc_add_series(
-    name = "Unique Users",
-    data = list_parse(
-      data.frame(
-        name = c("WS visits", "Downloads", "Requested", "Invoice", "Finalized"),
-        y = c(15654, 4064, 1987, 976, 846)
-      )
-    )
-  )
+
+
 
 
