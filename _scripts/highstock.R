@@ -15,7 +15,8 @@ options(download.file.method = "libcurl",
 #' ### Basics
 #' 
 #' Highstock work well with the quantmod package. It's 
-#' easy chart symbols. 
+#' easy chart symbols. And then you can add more series
+#' using `hc_add_series` (see below).
 #'
 library("quantmod")
 
@@ -29,7 +30,7 @@ hchart(x)
 #' use the `hc_add_series` function.  
 #'
 
-x <- getSymbols("AAPL", auto.assign = FALSE)
+x <- getSymbols("GOOG", auto.assign = FALSE)
 y <- getSymbols("AMZN", auto.assign = FALSE)
 
 highchart(type = "stock") %>% 
@@ -46,23 +47,39 @@ library("quantmod")
 usdjpy <- getSymbols("USD/JPY", src = "oanda", auto.assign = FALSE)
 eurkpw <- getSymbols("EUR/KPW", src = "oanda", auto.assign = FALSE)
 
-dates <- as.Date(c("2015-05-08", "2015-09-12"), format = "%Y-%m-%d")
-
-highchart(type = "stock") %>% 
+hc <- highchart(type = "stock") %>% 
   hc_title(text = "Charting some Symbols") %>% 
   hc_subtitle(text = "Data extracted using quantmod package") %>% 
   hc_add_series(usdjpy, id = "usdjpy") %>% 
-  hc_add_series(eurkpw, id = "eurkpw") %>% 
-  hc_add_series_flags(dates,
-                      title = c("E1", "E2"), 
-                      text = c("Event 1", "Event 2"),
-                      id = "usdjpy") %>% 
-  hc_add_theme(hc_theme_flat()) 
+  hc_add_series(eurkpw, id = "eurkpw")
+
+hc
+
+#' ### Flags
+#' 
+#' Previously we used the `id` parameter. This is necessary 
+#' to add flags:
+#' 
+library(dplyr)
+
+set.seed(123)
+
+data_flags <- data_frame(
+  date = sample(time(usdjpy), size = 5),
+  title = sprintf("E #%s", seq_along(date)),
+  text = sprintf("An interesting event #%s in %s", seq_along(date), date)
+)
+
+glimpse(data_flags)
+
+hc %>% 
+  hc_add_series(data_flags, hcaes(x = date),
+                type = "flags", onSeries = "usdjpy")
 
 #' 
 #' ### A More Interesting Example
 #' 
-#' You can do what you want. Add axis, more series, etc.
+#' You can do what you want. Add axis, series, bands, etc.
 #' 
 SPY <- getSymbols("SPY", from = Sys.Date() - lubridate::years(1), auto.assign = FALSE)
 SPY <- adjustOHLC(SPY)

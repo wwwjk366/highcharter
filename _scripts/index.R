@@ -94,17 +94,12 @@ hchart(airforecast)
 #' 
 library("quantmod")
 
-usdjpy <- getSymbols("USD/JPY", src = "oanda", auto.assign = FALSE)
-eurkpw <- getSymbols("EUR/KPW", src = "oanda", auto.assign = FALSE)
-
-dates <- as.Date(c("2015-05-08", "2015-09-12"), format = "%Y-%m-%d")
+x <- getSymbols("GOOG", auto.assign = FALSE)
+y <- getSymbols("AMZN", auto.assign = FALSE)
 
 highchart(type = "stock") %>% 
-  hc_add_series(usdjpy, id = "usdjpy") %>% 
-  hc_add_series(eurkpw, id = "eurkpw") %>% 
-  hc_add_series_flags(dates, title = c("E1", "E2"), 
-                      text = c("Event 1", "Event 2"),
-                      id = "usdjpy")
+  hc_add_series(x) %>% 
+  hc_add_series(y, type = "ohlc")
 
 #' 
 #' ### Highmaps
