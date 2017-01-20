@@ -134,5 +134,5 @@ makepage <- function(f){
   
 }
 
-try(makepage(f = "_scripts/highstock.R"))
+try(makepage(f = "_scripts/hchart.R"))
 # lapply(rfiles, function(x) { try(makepage(x)) })

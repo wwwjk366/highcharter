@@ -4,7 +4,7 @@
 #' ---
 #+echo=FALSE
 rm(list = ls())
-library("highcharter")
+library(highcharter)
 options(highcharter.theme = hc_theme_smpl())
 
 #'
