@@ -11,7 +11,8 @@ get_demos <- function(){
   options(highcharter.theme = hc_theme_smpl(
     plotOptions = list(
       series = list(showInLegend = FALSE),
-      line = list(lineWidth = 1)),
+      line = list(lineWidth = 1.2)
+      ),
     tooltip = list(valueDecimals = 2)
     )
   )
@@ -19,12 +20,14 @@ get_demos <- function(){
   data(diamonds, mpg, package = "ggplot2")
   data(GNI2014, package = "treemap")
   
-  
-  p1 <- hchart(mpg, "scatter", hcaes(x = displ, y = hwy, color = hwy), name = "Cars")
+  p1 <- hchart(mpg, "scatter", hcaes(x = displ, y = hwy, color = hwy), name = "Cars") %>% 
+    hc_yAxis(endOnTick = FALSE, startOnTick = FALSE)
   
   p2 <- hchart(forecast(ets(AirPassengers), level = 95, h = 12*2),
                fillOpacity = 0.7) %>% 
-    hc_xAxis(min = datetime_to_timestamp(as.Date("1955-01-01")))
+    hc_xAxis(min = datetime_to_timestamp(as.Date("1955-01-01"))) %>% 
+    hc_yAxis(showLastLabel = FALSE, showFirstLabel = FALSE, endOnTick = FALSE, startOnTick = FALSE) %>% 
+    hc_xAxis(showLastLabel = FALSE, showFirstLabel = FALSE, endOnTick = FALSE, startOnTick = FALSE)
   
   p3 <- hcmap("custom/world-robinson-lowres", data = GNI2014, name = "", 
               value = "GNI", joinBy = c("iso-a3", "iso3"), 
@@ -35,7 +38,8 @@ get_demos <- function(){
     hc_mapNavigation(enabled = FALSE)
   
   p4 <- hcboxplot(iris$Sepal.Length, var = iris$Species, name = "Sepal Length",
-                  color = "red")
+                  color = "red") %>% 
+    hc_xAxis(showLastLabel = TRUE, showFirstLabel = TRUE)
   
   set.seed(12313)
   N <- 22
@@ -64,26 +68,38 @@ get_demos <- function(){
     hc_add_series(density(rgamma(100000, 3, 0.8)),
                   type = "area", name = "Gamma(3. 0.8) Distribution") %>% 
     hc_plotOptions(series = list(fillOpacity = 0.5)) %>% 
-    hc_xAxis(min = -5, max = 12) 
+    hc_xAxis(min = -5, max = 12) %>% 
+    hc_yAxis(showLastLabel = FALSE, showFirstLabel = FALSE, endOnTick = FALSE, startOnTick = FALSE) %>% 
+    hc_xAxis(showLastLabel = FALSE, showFirstLabel = FALSE, endOnTick = FALSE, startOnTick = FALSE)
   
   
   brks <- seq(-3, 3, length.out = 40)
   grid <- expand.grid(brks, brks)
   m <- as.data.frame(grid) %>% 
     mutate(value =
-             dmvnorm(grid, mean = c(1, 1), sigma = matrix(c(1, .7, .7, 1), nrow = 2)) +
-             dmvnorm(grid, mean = c(-1, -1), sigma = matrix(c(1, -.7, -.7, 1), nrow = 2)) +
-             dmvnorm(grid, mean = c(2, -2), sigma = matrix(c(1, 0, 0, 1), nrow = 2))) %>% 
+             dmvnorm(grid, mean = c(1, 1), sigma = matrix(c(1, .2, .2, 1), nrow = 2)) +
+             dmvnorm(grid, mean = c(-1, -1), sigma = matrix(c(1, -.8, -.8, 1), nrow = 2)) +
+             dmvnorm(grid, mean = c(0, 0), sigma = matrix(c(1.5, 0, 0, 1.5), nrow = 2))) %>% 
     spread(Var2, value) %>% 
     select(-Var1) %>% 
     as.matrix() 
   
   colnames(m) <- rownames(m) <-  NULL
-  
+
+  ncols <- 10
+  cols <- c(rep("white", 2), rev(inferno(ncols - 2, begin = 0)))
+  cols <- hex_to_rgba(cols, alpha = 1:ncols/ncols)
+  colssotps <- list_parse2(
+    data.frame(
+      q = seq(0, ncols - 1) / (ncols - 1),
+      c = cols
+    )
+  )
+    
   p8 <- hchart(m) %>% 
     hc_add_theme(hc_theme_null()) %>% 
     hc_legend(enabled = FALSE) %>% 
-    hc_colorAxis(stops = color_stops(colors = inferno(10, begin = 0.1)))
+    hc_colorAxis(stops = colssotps)
   
   plots <- list(p1, p2, p3, p8, p4, p7, p5, p6)
   
