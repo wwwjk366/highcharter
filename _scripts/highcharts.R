@@ -5,7 +5,7 @@
 #+echo=FALSE
 rm(list = ls())
 library(highcharter)
-options(highcharter.theme = hc_theme_smpl())
+options(highcharter.theme = hc_theme_smpl(tooltip = list(valueDecimals = 2)))
 
 #'
 #' ## Highcharts Examples

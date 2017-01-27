@@ -4,8 +4,8 @@
 #+echo=FALSE
 rm(list = ls())
 library("highcharter")
-options(download.file.method = "libcurl",
-        highcharter.theme = hc_theme_smpl())
+options(download.file.method = "libcurl")
+options(highcharter.theme = hc_theme_smpl(tooltip = list(valueDecimals = 2)))
 
 #'
 #' ## Highstock Examples

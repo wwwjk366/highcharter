@@ -5,7 +5,7 @@
 rm(list = ls())
 library("highcharter")
 knitr::opts_chunk$set(warning=FALSE, message=FALSE)
-options(highcharter.theme = hc_theme_smpl())
+options(highcharter.theme = hc_theme_smpl(tooltip = list(valueDecimals = 2)))
 
 #'
 #' ## Highmaps 

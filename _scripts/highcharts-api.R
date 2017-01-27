@@ -4,6 +4,7 @@
 #+echo=FALSE
 rm(list = ls())
 library("highcharter")
+options(highcharter.theme = hc_theme_smpl(tooltip = list(valueDecimals = 2)))
 
 ##' ## The highcharts API in highcharter
 #' 
