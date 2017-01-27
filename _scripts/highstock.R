@@ -8,7 +8,7 @@ options(download.file.method = "libcurl")
 options(highcharter.theme = hc_theme_smpl(tooltip = list(valueDecimals = 2)))
 
 #'
-#' ## Highstock Examples
+#' ## Highstock
 #' 
 #' <div id ="toc"></div>
 #' 

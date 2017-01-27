@@ -98,8 +98,25 @@ highchart() %>%
 
 #' <br><br>
 #' 
-#' ### FontAwesome Integration ####
-library("MASS")
+#' ### Multicolor series
+library(dplyr)
+
+n <- 10
+colors <- sample(colorize(1:n))
+
+df <- data_frame(
+  x = 1:n,
+  y = runif(n, 1, 5),
+  color =  colorize(y)
+)
+
+hchart(df, "coloredarea", hcaes(x, y, segmentColor = color))
+
+hchart(df, "coloredline", hcaes(x, y, segmentColor = color))
+
+#' 
+#' ### FontAwesome Integration
+library(MASS)
 
 dscars <- round(mvrnorm(n = 20, mu = c(1, 1), Sigma = matrix(c(1,0,0,1),2)), 2)
 dsplan <- round(mvrnorm(n = 10, mu = c(3, 4), Sigma = matrix(c(2,.5,2,2),2)), 2)
@@ -123,34 +140,24 @@ highchart() %>%
                 icon = fa_icon("truck"), name = "truck")
 
 #' ### Grouped Categories ####
-library(purrr)           # map function to make grouped categories argument
-library(dplyr)           # for select function 
+library(purrr) # map function to make grouped categories argument
+library(dplyr) # for select function 
 
-Category <- c("Furniture","Furniture","Furniture","Furniture",
-              "Office Supplies","Office Supplies", "Office Supplies", "Office Supplies",
-              "Office Supplies", "Office Supplies", "Office Supplies", "Office Supplies",
-              "Office Supplies", "Technology","Technology","Technology","Technology")
+data(mpg, package = "ggplot2")
 
-SubCategory <- c("Bookcases","Chairs","Furnishings","Tables","Appliances","Art","Binders","Envelopes", 
-                 "Fasteners","Labels","Paper","Storage",  "Supplies", "Accessories","Copiers","Machines",
-                 "Phones")
-sales <- c(889222.51,920892.65,239840.16,445823.93,614737.91,225594.68,281494.68,104903.88,50156.06,44269.30,
-           150113.36,692903.08,152196.19,463383.33,965899.78,458655.43,1005525.38)
+mpgg <- mpg %>% 
+  filter(class %in% c("suv", "compact", "midsize")) %>% 
+  group_by(class, manufacturer) %>% 
+  summarize(count = n())
 
-mydf <- data_frame(Category,SubCategory,sales, color = colorize(Category))
-
-categories_grouped <- map(unique(Category), function(x){
-  list(
-    name = x,
-    categories = SubCategory[Category == x]
-  )
-})
-
+categories_grouped <- mpgg %>% 
+  group_by(name = class) %>% 
+  do(categories = .$manufacturer) %>% 
+  list_parse()
 
 highchart() %>% 
-  hc_chart(type = "bar") %>% 
   hc_xAxis(categories = categories_grouped) %>% 
-  hc_add_series(data = list_parse(dplyr::select(mydf, y = sales, color = color)),
+  hc_add_series(data = mpgg, type = "bar", hcaes(y = count, color = manufacturer),
                 showInLegend = FALSE)
 
 

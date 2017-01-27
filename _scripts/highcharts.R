@@ -8,10 +8,162 @@ library(highcharter)
 options(highcharter.theme = hc_theme_smpl(tooltip = list(valueDecimals = 2)))
 
 #'
-#' ## Highcharts Examples
+#' ## Highcharts
 #' 
 #' <div id ="toc"></div>
 #' 
+#' ### Some flexibility
+#' 
+#' Same data a lot of charts!
+#' 
+library(dplyr)
+library(stringr)
+library(purrr)
+
+n <- 5
+
+set.seed(123)
+
+colors <- c("#d35400", "#2980b9", "#2ecc71", "#f1c40f", "#2c3e50", "#7f8c8d")
+colors2 <- c("#000004", "#3B0F70", "#8C2981", "#DE4968", "#FE9F6D", "#FCFDBF")
+
+
+df <- data.frame(x = seq_len(n) - 1) %>% 
+  mutate(
+    y = 10 + x + 10 * sin(x),
+    y = round(y, 1),
+    z = (x*y) - median(x*y),
+    e = 10 * abs(rnorm(length(x))) + 2,
+    e = round(e, 1),
+    low = y - e,
+    high = y + e,
+    value = y,
+    name = sample(fruit[str_length(fruit) <= 5], size = n),
+    color = rep(colors, length.out = n),
+    segmentColor = rep(colors2, length.out = n)
+  )
+
+df
+
+create_hc <- function(t) {
+  
+  dont_rm_high_and_low <- c("arearange", "areasplinerange",
+                            "columnrange", "errorbar")
+  
+  is_polar <- str_detect(t, "polar")
+  
+  t <- str_replace(t, "polar", "")
+  
+  if(!t %in% dont_rm_high_and_low) df <- df %>% select(-e, -low, -high)
+  
+  
+  highchart() %>%
+    hc_title(text = paste(ifelse(is_polar, "polar ", ""), t),
+             style = list(fontSize = "15px")) %>% 
+    hc_chart(type = t,
+             polar = is_polar) %>% 
+    hc_xAxis(categories = df$name) %>% 
+    hc_add_series(df, name = "Fruit Consumption", showInLegend = FALSE) 
+  
+}
+
+hcs <- c("line", "spline",  "area", "areaspline",
+         "column", "bar", "waterfall" , "funnel", "pyramid",
+         "pie" , "treemap", "scatter", "bubble",
+         "arearange", "areasplinerange", "columnrange", "errorbar",
+         "polygon", "polarline", "polarcolumn", "polarcolumnrange",
+         "coloredarea", "coloredline")  %>% 
+  map(create_hc) 
+
+#+echo=FALSE
+hcs %>% 
+  map(hc_size, height = 300) %>% 
+  map(tags$div, class = "col-sm-4") %>% 
+  tags$div(class = "row")
+
+
+#'
+#'
+#' ### HIMYM example
+#'
+data("favorite_bars")
+data("favorite_pies")
+
+highchart() %>% 
+  # Data
+  hc_add_series(favorite_pies, "column", hcaes(x = pie, y = percent), name = "Pie") %>%
+  hc_add_series(favorite_bars, "pie", hcaes(name = bar, y = percent), name = "Bars") %>%
+  # Optiosn for each type of series
+  hc_plotOptions(
+    series = list(
+      showInLegend = FALSE,
+      pointFormat = "{point.y}%"
+    ),
+    column = list(
+      colorByPoint = TRUE
+    ),
+    pie = list(
+      colorByPoint = TRUE, center = c('30%', '10%'),
+      size = 150, dataLabels = list(enabled = FALSE)
+    )) %>%
+  # Axis
+  hc_yAxis(
+    title = list(text = "percentage of tastiness"),
+    labels = list(format = "{value}%"), max = 100
+  ) %>% 
+  hc_xAxis(categories = favorite_pies$pie) %>%
+  # Titles and credits
+  hc_title(
+    text = "This is a bar graph describing my favorite pies
+    including a pie chart describing my favorite bars"
+  ) %>%
+  hc_subtitle(text = "In percentage of tastiness and awesomeness") %>% 
+  hc_credits(
+    enabled = TRUE, text = "Source: HIMYM",
+    href = "https://www.youtube.com/watch?v=f_J8QU1m0Ng",
+    style = list(fontSize = "12px")
+  )
+
+
+#'
+#' ### Chart Color Gradient
+#'
+#' Idea from http://jsfiddle.net/bilelz/sxy1cwnv/
+#' 
+
+highchart() %>% 
+  hc_chart(backgroundColor = "#") %>% 
+  hc_title(text = "Chart color gradient it's on fire", style = list(color = "#CCC")) %>% 
+  # hc_xAxis(categories = month.abb) %>% 
+  hc_yAxis(labels = list(style = list(color = "#CCC")),
+           gridLineColor = "#111111") %>% 
+  hc_series(
+    list(
+      data =  abs(rnorm(100)) + 1,
+      type = "areaspline",
+      marker = list(enabled = FALSE),
+      color =  list(
+        linearGradient = list(x1 = 0, y1 = 1, x2 = 0, y2 = 0),
+        stops = list(
+          list(0, "transparent"),
+          list(0.33, "yellow"),
+          list(0.66, "red"),
+          list(1, "#ccc")
+        )
+      ),
+      fillColor = list(
+        linearGradient = list(x1 = 0, y1 = 1, x2 = 0, y2 = 0),
+        stops = list(
+          list(0, "transparent"),
+          list(0.1, "yellow"),
+          list(0.5, "red"),
+          list(1, "black")
+          )
+        )
+      )
+    ) %>% 
+  hc_add_theme(hc_theme_null())
+
 #' ### Highcharts home page demo
 #'
 #' Example in http://www.highcharts.com/
@@ -64,110 +216,6 @@ highchart() %>%
                                  dataLabels = list(enabled = FALSE))),
                 center = c('20%', 45),
                 size = 80)
-
-#' ### Some flexibility
-#' 
-#' Same data a lot of charts!
-#' 
-library(dplyr)
-library(stringr)
-library(purrr)
-library(bsplus)
-
-n <- 5
-
-set.seed(123)
-
-df <- data.frame(x = seq_len(n) - 1) %>% 
-  mutate(
-    y = 10 + x + 10 * sin(x),
-    y = round(y, 1),
-    z = (x*y) - median(x*y),
-    e = 10 * abs(rnorm(length(x))) + 2,
-    e = round(e, 1),
-    low = y - e,
-    high = y + e,
-    value = y,
-    name = sample(fruit[str_length(fruit) <= 5], size = n),
-    color = head(getOption("highcharter.theme")$color, n)
-  )
-
-df
-
-create_hc <- function(t) {
-  
-  dont_rm_high_and_low <- c("arearange", "areasplinerange",
-                            "columnrange", "errorbar")
-  
-  is_polar <- str_detect(t, "polar")
-  
-  t <- str_replace(t, "polar", "")
-  
-  if(!t %in% dont_rm_high_and_low) df <- df %>% select(-e, -low, -high)
-
-  
-  highchart() %>%
-    hc_title(text = paste(ifelse(is_polar, "polar ", ""), t),
-             style = list(fontSize = "15px")) %>% 
-    hc_chart(type = t,
-             polar = is_polar) %>% 
-    hc_xAxis(categories = df$name) %>% 
-    hc_add_series(df, name = "Fruit Consumption", showInLegend = FALSE) 
-  
-}
-
-hcs <- c("line", "spline",  "area", "areaspline",
-  "column", "bar", "waterfall" , "funnel", "pyramid",
-  "pie" , "treemap", "scatter", "bubble",
-  "arearange", "areasplinerange", "columnrange", "errorbar",
-  "polygon", "polarline", "polarcolumn")  %>% 
-  map(create_hc) 
-
-#+echo=FALSE
-hcs %>% 
-  map(hc_size, height = 300) %>% 
-  map(tags$div, class = "col-sm-4") %>% 
-  tags$div(class = "row")
-
-#'
-#' ### Chart Color Gradient
-#'
-#' Idea from http://jsfiddle.net/bilelz/sxy1cwnv/
-#' 
-
-highchart() %>% 
-  hc_chart(backgroundColor = "#") %>% 
-  hc_title(text = "Chart color gradient it's on fire", style = list(color = "#CCC")) %>% 
-  # hc_xAxis(categories = month.abb) %>% 
-  hc_yAxis(labels = list(style = list(color = "#CCC")),
-           gridLineColor = "#111111") %>% 
-  hc_series(
-    list(
-      data =  abs(rnorm(100)) + 1,
-      type = "areaspline",
-      marker = list(enabled = FALSE),
-      color =  list(
-        linearGradient = list(x1 = 0, y1 = 1, x2 = 0, y2 = 0),
-        stops = list(
-          list(0, "transparent"),
-          list(0.33, "yellow"),
-          list(0.66, "red"),
-          list(1, "#ccc")
-        )
-      ),
-      fillColor = list(
-        linearGradient = list(x1 = 0, y1 = 1, x2 = 0, y2 = 0),
-        stops = list(
-          list(0, "transparent"),
-          list(0.1, "yellow"),
-          list(0.5, "red"),
-          list(1, "black")
-          )
-        )
-      )
-    ) %>% 
-  hc_add_theme(hc_theme_null())
-
 
 #+echo=FALSE
 # #'
