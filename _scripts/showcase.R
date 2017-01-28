@@ -17,9 +17,8 @@ options(download.file.method = "libcurl")
 #' 
 #' A better version (in a syntax way) than http://jkunst.com/r/presenting-highcharter/.
 #' 
-library(purrr)
+library(tidyverse)
 library(rwars)
-library(tidyr)
 
 swmovies <- get_all_films()
 
@@ -29,11 +28,13 @@ swdata <- map_df(swmovies$results, function(x){
     species = length(x$species),
     planets = length(x$planets),
     characters = length(x$characters),
-    vehicles = length(x$vehicles)
+    vehicles = length(x$vehicles),
+    release = x$release_date
   )
 }) 
 
-swdata <- gather(swdata, key, number, -movie)
+swdata <- gather(swdata, key, number, -movie, -release) %>% 
+  arrange(release)
 
 swdata
 

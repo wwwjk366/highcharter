@@ -103,7 +103,7 @@ get_demos <- function(){
   
   
   library(rwars)
-  library(tidyr)
+  library(tidyverse)
   
   swmovies <- get_all_films()
   
@@ -113,12 +113,13 @@ get_demos <- function(){
       species = length(x$species),
       planets = length(x$planets),
       characters = length(x$characters),
-      vehicles = length(x$vehicles)
+      vehicles = length(x$vehicles),
+      release = x$release_date
     )
   }) 
-  swdata <- gather(swdata, key, number, -movie)
   
-  swdata
+  swdata <- gather(swdata, key, number, -movie, -release) %>% 
+    arrange(release)
   
   p9 <- hchart(swdata, "line", hcaes(x = movie, y = number, group = key),
          color = c("#e5b13a", "#4bd5ee", "#4AA942", "#FAFAFA")) %>% 
@@ -141,7 +142,6 @@ get_demos <- function(){
         )
       )
     )
-  
   
   
   plots <- list(p1, p2, p3, p9, p8, p4, p7, p5, p6)
