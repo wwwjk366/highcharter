@@ -101,7 +101,48 @@ get_demos <- function(){
     hc_legend(enabled = FALSE) %>% 
     hc_colorAxis(stops = colssotps)
   
-  plots <- list(p1, p2, p3, p8, p4, p7, p5, p6)
+  
+  library(rwars)
+  library(tidyr)
+  
+  swmovies <- get_all_films()
+  
+  swdata <- map_df(swmovies$results, function(x){
+    data_frame(
+      movie = x$title,
+      species = length(x$species),
+      planets = length(x$planets),
+      characters = length(x$characters),
+      vehicles = length(x$vehicles)
+    )
+  }) 
+  swdata <- gather(swdata, key, number, -movie)
+  
+  swdata
+  
+  p9 <- hchart(swdata, "line", hcaes(x = movie, y = number, group = key),
+         color = c("#e5b13a", "#4bd5ee", "#4AA942", "#FAFAFA")) %>% 
+    hc_xAxis(visible = FALSE) %>% 
+    hc_title(
+      text = "Diversity in <span style=\"color:#e5b13a\"> STAR WARS</span> movies",
+      useHTML = TRUE) %>% 
+    hc_tooltip(table = TRUE, sort = TRUE) %>% 
+    hc_credits(
+      enabled = TRUE,
+      text = "Source: SWAPI via rwars package",
+      href = "https://swapi.co/") %>% 
+    hc_add_theme(
+      hc_theme_flatdark(
+        chart = list(
+          backgroundColor = "transparent",
+          divBackgroundImage = "http://www.wired.com/images_blogs/underwire/2013/02/xwing-bg.gif"
+        )
+      )
+    )
+  
+  
+  
+  plots <- list(p1, p2, p3, p9, p8, p4, p7, p5, p6)
   
   plots <- map(plots, hc_size, height = 300)
   

@@ -3,20 +3,61 @@
 #' ---
 #+echo=FALSE
 rm(list = ls())
-library("highcharter")
+library(highcharter)
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 options(highcharter.theme = NULL)
-# printhc <- function(x) {
-#   try(hc <- readRDS(sprintf("_showcase/%s.rds", x)))
-#   try(hc <- readRDS(sprintf("../_showcase/%s.rds", x)))
-#   hc
-# }
+options(download.file.method = "libcurl")
 
 #'
 #' ## Showcase
 #' 
 #' <div id ="toc"></div>
-#'
+#' 
+#' ### Stars Wars
+#' 
+#' A better version (in a syntax way) than http://jkunst.com/r/presenting-highcharter/.
+#' 
+library(purrr)
+library(rwars)
+library(tidyr)
+
+swmovies <- get_all_films()
+
+swdata <- map_df(swmovies$results, function(x){
+  data_frame(
+    movie = x$title,
+    species = length(x$species),
+    planets = length(x$planets),
+    characters = length(x$characters),
+    vehicles = length(x$vehicles)
+  )
+}) 
+
+swdata <- gather(swdata, key, number, -movie)
+
+swdata
+
+hchart(swdata, "line", hcaes(x = movie, y = number, group = key),
+       color = c("#e5b13a", "#4bd5ee", "#4AA942", "#FAFAFA")) %>% 
+  hc_title(
+    text = "Diversity in <span style=\"color:#e5b13a\"> STAR WARS</span> movies",
+    useHTML = TRUE) %>% 
+  hc_tooltip(table = TRUE, sort = TRUE) %>% 
+  hc_credits(
+    enabled = TRUE,
+    text = "Source: SWAPI via rwars package",
+    href = "https://swapi.co/") %>% 
+  hc_add_theme(
+    hc_theme_flatdark(
+      chart = list(
+        backgroundColor = "transparent",
+        divBackgroundImage = "http://www.wired.com/images_blogs/underwire/2013/02/xwing-bg.gif"
+      )
+    )
+  )
+
+
+
 #' ### Stars
 #' 
 #' Inspired by Nadieh Bremer's [block](http://bl.ocks.org/nbremer/eb0d1fd4118b731d069e2ff98dfadc47).
@@ -86,6 +127,7 @@ hchart(weather, type = "columnrange",
     labels = list(format = "{value: %b}")) %>% 
   hc_tooltip(useHTML = TRUE, pointFormat = tltip,
              headerFormat = as.character(tags$small("{point.x:%d %B, %Y}")))
+
 
 #'
 #' ### The Impact of Vaccines
