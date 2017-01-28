@@ -27,14 +27,25 @@ hcboxplot(x = diamonds$x, var = diamonds$color, var2 = diamonds$cut,
           outliers = FALSE) %>% 
   hc_chart(type = "column") # to put box vertical
 
+#' ### Parallel Coordinates
+require(viridisLite)
+
+n <- 15
+
+hcparcords(head(mtcars, n), color = hex_to_rgba(magma(n), 0.5))
+
 
 #' ### Icon Arrays
 #' 
-hciconarray(c("happy", "sad"), c(5, 200), icons = "child")
+set.seed(123)
 
+icons <- c("motorcycle", "taxi", "bus", "plane")
 
-hciconarray(c("car", "truck", "plane"), c(38, 15, 10),
-            icons = c("car", "truck", "plane"))
+n <- sample(3:10, length(icons)) %>% 
+  sort(decreasing = TRUE) %>% 
+  {. *  seq(length(icons), 1) } 
+
+hciconarray(icons, n, icons = icons, size = 5)
 
 
 #' 
@@ -43,8 +54,8 @@ hciconarray(c("car", "truck", "plane"), c(38, 15, 10),
 #' Here we use the `treemap` package to create a treemap object and then
 #' we create the same treemap via highcharts ;).
 #+fig.keep="none"
-library("treemap")
-library("viridisLite")
+library(treemap)
+library(viridisLite)
 
 data(GNI2014)
 

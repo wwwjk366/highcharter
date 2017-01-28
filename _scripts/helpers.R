@@ -123,8 +123,10 @@ get_demos <- function(){
   p9 <- hchart(swdata, "line", hcaes(x = movie, y = number, group = key),
          color = c("#e5b13a", "#4bd5ee", "#4AA942", "#FAFAFA")) %>% 
     hc_xAxis(visible = FALSE) %>% 
+    hc_yAxis(endOnTick = FALSE) %>% 
     hc_title(
       text = "Diversity in <span style=\"color:#e5b13a\"> STAR WARS</span> movies",
+      style = list(fontSize = "13px"),
       useHTML = TRUE) %>% 
     hc_tooltip(table = TRUE, sort = TRUE) %>% 
     hc_credits(
