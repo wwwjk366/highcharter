@@ -76,7 +76,7 @@ hcs <- c("line", "spline",  "area", "areaspline",
   map(create_hc) 
 
 #+echo=FALSE
-hcs %>% 
+hcs %>% # hw_grid() %>%  htmltools::browsable() 
   map(hc_size, height = 300) %>% 
   map(tags$div, class = "col-sm-4") %>% 
   tags$div(class = "row")
