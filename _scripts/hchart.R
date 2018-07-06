@@ -100,8 +100,8 @@ x <- getSymbols("USD/JPY", src = "oanda", auto.assign = FALSE)
 hchart(x)
 
 #' ### `xts ohlc` objects
-x <- getSymbols("YHOO", auto.assign = FALSE)
-hchart(x)
+# x <- getSymbols("YHOO", auto.assign = FALSE)
+# hchart(x)
 
 #' ### Autocovariance & Autocorrelation
 x <- acf(diff(AirPassengers), plot = FALSE)

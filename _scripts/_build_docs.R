@@ -7,7 +7,7 @@ fls <- dir("docs/", full.names = TRUE, recursive = TRUE, pattern = ".html")
 
 theme <- "lumen"
 
-link <- "<link href=\"https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/%s/bootstrap.min.css\" rel=\"stylesheet\" crossorigin=\"anonymous\">"
+link <- "<link href=\"https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.1.1/lumen/bootstrap.css\" rel=\"stylesheet\" crossorigin=\"anonymous\">"
 link <- sprintf(link, theme)
 
 map(fls, function(f){
